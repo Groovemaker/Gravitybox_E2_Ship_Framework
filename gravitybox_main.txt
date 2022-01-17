@@ -8,7 +8,7 @@
 @persist [NUM_ EngineIDRange Engine_MaxCount HasWeapons Chair_MaxCount ChassisID CurID EnginePowerSum LateralCapabilities CanTrack MissileSpeed TrackingRadius ChassisWeight Tracking EngineSizGlobal Cooldown ShipArmor Weapon_FireRate ThrottlePower] 
 @persist [ARR_ Engines Weapons Chairs Chair_Sockets Weapon_Sockets Engine_Sockets Engine_Glows Engine_Flames JetLength EngineSizMultis]:array
 @persist [STR_ EngineSound]:string
-@persist [VEC_ Chair1Pos Chair2Pos FirePos]:vector
+@persist [VEC_ Chair1Pos Chair2Pos FirePos TaPos]:vector
 @persist [ENT_ Chair1 Chair2 Baseplate Missile TrackingEnt]:entity
 
 # Flight
@@ -226,13 +226,13 @@ if(clk("main")){
         Baseplate:applyForce((-Baseplate:vel() / 50)*Baseplate:mass())   
         # Utility Missiles
         if(Tracking == 0){
-            MissileSpeed = 400
-            Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
-        }else{
             MissileSpeed = 600
+            #Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
+        }else{
+            MissileSpeed = 800
             if(CanTrack == 1){
                 EntPos = TrackingEnt:pos()
-                Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 150) / 1)
+                #Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 150) / 1)
             }else{
                 Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
             }
