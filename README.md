@@ -13,3 +13,5 @@
     
 ]#
 </pre>
+
+Simply put all these files into e2 folder and edit the main file!
