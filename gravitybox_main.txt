@@ -5,7 +5,7 @@
 
 # Main
 
-@persist [NUM_ EngineIDRange Engine_MaxCount HasWeapons Chair_MaxCount ChassisID CurID EnginePowerSum LateralCapabilities CanTrack TrackingRadius ChassisWeight Tracking EngineSizGlobal Cooldown ShipArmor Weapon_FireRate ThrottlePower] 
+@persist [NUM_ EngineIDRange Engine_MaxCount HasWeapons Chair_MaxCount ChassisID CurID EnginePowerSum LateralCapabilities CanTrack MissileSpeed TrackingRadius ChassisWeight Tracking EngineSizGlobal Cooldown ShipArmor Weapon_FireRate ThrottlePower] 
 @persist [ARR_ Engines Weapons Chairs Chair_Sockets Weapon_Sockets Engine_Sockets Engine_Glows Engine_Flames JetLength EngineSizMultis]:array
 @persist [STR_ EngineSound]:string
 @persist [VEC_ Chair1Pos Chair2Pos FirePos]:vector
@@ -101,6 +101,7 @@ if(first() || duped()){
     
     # Main Loop init
     timer("main",1)
+    timer("trackingsys",1)
     
     Baseplate:propFreeze(0)
     Chair1:propFreeze(0)
@@ -225,19 +226,10 @@ if(clk("main")){
         Baseplate:applyForce((-Baseplate:vel() / 50)*Baseplate:mass())   
         # Utility Missiles
         if(Tracking == 0){
+            MissileSpeed = 200
             Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
-            findClearWhiteList()
-            findIncludeClass("player")
-            findIncludeClass("prop_*")
-            findExcludePlayer(Driver)
-            findExcludePlayerProps(owner())
-            findInSphere(Missile:pos(),TrackingRadius)
-            if(findToArray()[1,entity]:isValid()){
-                Tracking = 1
-                TrackingEnt = findToArray()[1,entity]
-                print(TrackingEnt)
-            }
         }else{
+            MissileSpeed = 400
             if(CanTrack == 1){
                 EntPos = TrackingEnt:pos()
                 Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 150) / 1)
@@ -246,11 +238,15 @@ if(clk("main")){
             }
         }
         Missile:applyAngForce(-(Missile:angVel()) * (Missile:mass()) * 1)
-        Missile:applyForce((Missile:forward() * Missile:mass())* 400)
+        Missile:applyForce((Missile:forward() * Missile:mass())* MissileSpeed)
     }
     
     # Re-loop
-    timer("main",10)
+    if(perf()){
+        timer("main",10)
+    }else{
+        timer("main",50)
+    }
 }
 if(clkName():find("de-alpha")){
         local Parse = clkName():explode(";")[2,string]:toNumber()
@@ -263,4 +259,22 @@ if(clk("cooldown")){
 }
 if(clk("tracker")){
     CanTrack = 1
+}
+if(clk("trackingsys")){
+    if(perf()){
+        if(Tracking == 0){
+            findClearWhiteList()
+            findIncludeClass("player")
+            findIncludeClass("prop_*")
+            findExcludePlayer(Driver)
+            findExcludePlayerProps(owner())
+            findInSphere(Missile:pos(),TrackingRadius)
+            if(findToArray()[1,entity]:isValid()){
+                Tracking = 1
+                TrackingEnt = findToArray()[1,entity]
+                print(TrackingEnt)
+            }
+        }
+        timer("trackingsys",250)
+    }
 }
