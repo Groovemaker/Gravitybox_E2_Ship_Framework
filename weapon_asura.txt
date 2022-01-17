@@ -1,0 +1,22 @@
+# Devastator Weapon
+
+Weapon_FireRate = 1
+
+function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
+        Tracking = 0
+        IsTracking = 0
+        CanTrack = 0
+        TrackingRadius = 1000
+        Missile = propSpawn("models/props_phx/amraam.mdl",ang(0,0,0),0)
+        Missile:setPos(SoundEntity:toWorld(vec(0,50,-50)))
+        Missile:propGravity(0)
+        Missile:setAng((holoEntity(123):pos()-Missile:pos()):toAngle())
+        Missile:soundPlay(11,0,"weapons/rpg/rocket1.wav")
+        Missile:soundPlay(22,0,"weapons/rpg/rocket1.wav")
+        Missile:soundPlay(33,0,"weapons/rpg/rocket1.wav")
+        Missile:setTrails(100,2,1,"trails/laser",vec(200,175,255), 255)  
+        Missile:applyForce((Missile:forward() * Missile:mass())*1)
+        SoundEntity:soundPlay(2,0,"weapons/mortar/mortar_explode3.wav")
+        soundPitch(2,randint(95,100))
+        timer("tracker",150)
+}

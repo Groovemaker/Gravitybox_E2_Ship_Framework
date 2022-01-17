@@ -1,6 +1,6 @@
 # Devastator Weapon
 
-Weapon_FireRate = 2
+Weapon_FireRate = 1
 
 function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         holoCreate(Index)

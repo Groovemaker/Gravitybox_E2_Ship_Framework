@@ -1,6 +1,6 @@
 # Amrum Weapon
 
-Weapon_FireRate = 4
+Weapon_FireRate = 1
 
 function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         holoCreate(Index)
@@ -22,7 +22,7 @@ function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         holoModel(Index+1,"models/props_trainstation/trainstation_column001.mdl")
         holoMaterial(Index+1,"models/props_combine/tpballglow")
         holoScale(Index+1,vec(0.2,0.2,50))
-        holoColor(Index+1,vec4(255,255,255,254))
+        holoColor(Index+1,vec4(233,200,255,254))
         holoDisableShading(Index+1,1)
         holoAlpha(Index+1,255)
         holoClipEnabled(Index+1,1,1)
@@ -32,8 +32,8 @@ function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         holoClip(Index,1,HitPos,-holoEntity(21):up(),1)
         
         propSpawn("models/props_phx/torpedo.mdl",HitPos,ang(0,0,0),1):propBreak()
-        SoundEntity:soundPlay(2,0,"npc/strider/strider_minigun.wav")
-        SoundEntity:soundPlay(3,0,"npc/env_headcrabcanister/launch.wav")
-        soundPitch(2,randint(133,155))
+        SoundEntity:soundPlay(2,0.9,"npc/strider/strider_minigun.wav")
+        SoundEntity:soundPlay(3,0.9,"npc/env_headcrabcanister/launch.wav")
+        soundPitch(2,randint(188,255))
         soundPitch(3,randint(144,200))
 }
