@@ -4,7 +4,7 @@
 
 local EnginePower = 850
 EnginePowerSum = EnginePowerSum + EnginePower
-EngineSound = "thrusters/hover00.wav"
+EngineSound = "NPC_CombineGunship.RotorSound"
 
 ThrottlePower = 1
 

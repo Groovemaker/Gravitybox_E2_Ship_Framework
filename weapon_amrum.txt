@@ -1,6 +1,6 @@
 # Amrum Weapon
 
-Weapon_FireRate = 1
+Weapon_FireRate = 4.5
 
 function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         holoCreate(Index)
