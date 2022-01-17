@@ -272,7 +272,7 @@ if(clk("trackingsys")){
             if(findToArray()[1,entity]:isValid()){
                 Tracking = 1
                 TrackingEnt = findToArray()[1,entity]
-                print(TrackingEnt)
+                #print(TrackingEnt)
             }
         }
         timer("trackingsys",250)
