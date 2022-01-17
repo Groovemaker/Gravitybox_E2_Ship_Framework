@@ -1,0 +1,234 @@
+@name Gravitybox - An user friendly ship framework
+
+# Landing Pad
+@model models/props_phx/construct/metal_plate4x4.mdl
+
+# Main
+
+@persist [NUM_ EngineIDRange Engine_MaxCount HasWeapons Chair_MaxCount ChassisID CurID EnginePowerSum LateralCapabilities ChassisWeight EngineSizGlobal Cooldown ShipArmor Weapon_FireRate ThrottlePower] 
+@persist [ARR_ Engines Weapons Chairs Chair_Sockets Weapon_Sockets Engine_Sockets Engine_Glows Engine_Flames JetLength EngineSizMultis]:array
+@persist [STR_ EngineSound]:string
+@persist [VEC_ Chair1Pos Chair2Pos]:vector
+@persist [ENT_ Chair1 Chair2 Baseplate]:entity
+
+# Flight
+
+@persist [Throttle IsOn Rollpower Roll]
+@persist [Driver]:entity
+
+#[
+    ~[ Gravitybox Spaceship Building Framework ]~
+    --------------------------------------------------------------------------------------------
+    -[ 17.01.2022 ]-
+    -[ 07:15 ]-
+    --------------------------------------------------------------------------------------------
+    Hi! I'm Runic.
+    This is the Gravitybox Ship Framework.
+    You can slot together any engines, chassis and weapons by #including them down there!
+    You are also encouraged to modify the original modules.
+    
+]#
+
+# First
+if(first() || duped()){
+    Throttle = 0
+    Cooldown = 1
+    # Holo ID Ranges, dont change.
+    ChassisIDRange = 400
+    EngineIDRange = 200
+        
+    # Include Chassis Here!
+    #include "chassis_vulture"
+    
+    # Include Engines Here!
+    #include "engine_ravager"
+    #include "engine_ravager"
+    
+    # Include Weapons Here!
+    #include "weapon_devastator"
+    
+    # Don't spawn more engines than the chassis can handle to avoid bugs
+    if(Engines:count() > Engine_MaxCount){
+        error("Too Many Engines for chassis! Maximum on this one: "+Engine_MaxCount)
+    }
+    
+    # Don't spawn more weapons than the chassis can handle to avoid bugs
+
+
+      
+    # Baseplate
+    Baseplate = propSpawn("models/props_phx/construct/wood/wood_angle360.mdl",ang(0,0,0),1)
+    Baseplate:setHealth(ShipArmor)
+    Baseplate:setAlpha(0)
+    Baseplate:setPos(entity():pos())
+    
+    # Setup Engines onto Chassis
+    foreach(K,V:number = Engine_Sockets){
+        holoPos(Engines[K,number],holoEntity(V):pos())
+        holoParent(Engines[K,number],ChassisID)
+    }
+    
+    # Parent to Baseplate with offset
+    holoPos(ChassisID,Baseplate:toWorld(vec(0,0,5)))
+    holoAng(ChassisID,Baseplate:toWorld(ang(0,0,0)))
+    holoParent(ChassisID,Baseplate)
+    
+    # Chairs
+    Chair1 = seatSpawn("",1)
+    Chair1:setPos(Baseplate:toWorld(Chair1Pos))
+    Chair1:setAng(Baseplate:toWorld(ang(0,-90,0)))
+    Chair1:setMass(1)
+    
+    if(Chair_MaxCount > 1){
+        Chair2 = seatSpawn("",1)
+        Chair2:setPos(Baseplate:toWorld(Chair2Pos))
+        Chair2:setAng(Baseplate:toWorld(ang(0,-90,0)))
+        Chair2:setMass(1)  
+    }
+    
+    # Weld Chairs to Baseplate
+    weld(Chair1,Baseplate)
+    weld(Chair2,Baseplate)
+        
+    # Baseplate setup
+    Baseplate:propGravity(0)
+    Baseplate:setMass(17777)
+    foreach(K,V:number = Engine_Flames){
+        holoScale(V,vec(Throttle,Throttle,JetLength[K,number]+Throttle) * EngineSizMultis[K,number])
+    }
+    holoEntity(ChassisID):soundPlay(1,0,EngineSound)
+    soundPitch(1,0)
+    
+    # Main Loop init
+    timer("main",1)
+    
+    Baseplate:propFreeze(0)
+    Chair1:propFreeze(0)
+    Chair2:propFreeze(0)
+    
+    # Aim reticle
+    holoCreate(123)
+    holoModel(123,"hq_sphere")
+    holoScale(123,vec(0.6))
+    holoMaterial(123,"hlmv/debugmrmwireframe")
+    holoColor(123,vec(100,255,133))
+}
+
+# Clks
+## Main Loop
+if(clk("main")){
+    if(perf()){
+        # Engine Flames
+        for(I=1,Engine_Flames:count()){
+            holoAng(Engine_Flames[I,number],holoEntity(Engine_Flames[I,number]):toWorld(ang(0,111,0)))
+        }
+        
+        # Flight
+        if(Chair1:driver()){
+            holoAlpha(123,254)
+            Driver = Chair1:driver()
+            local AimPos = rangerOffset(99916384, Driver:shootPos(), Driver:eye()):position()
+            # Weapons
+            if(Driver:keyAttack1()){
+                if(Cooldown == 1){
+                    rangerFilter(array(Baseplate,owner(),Chair1,Chair2))
+                    FirePos = holoEntity(123):pos()
+                    Cooldown = 0
+                    if(HasWeapons == 1){weapon_fire(777,holoEntity(Weapon_Sockets[1,number]),holoEntity(Weapon_Sockets[1,number]):pos(),FirePos)}
+                    local Line = "de-alpha;"+777
+                    timer(Line,(1000/Weapon_FireRate)/2)
+                    soundVolume(2,3)
+                    timer("cooldown",1000/Weapon_FireRate)
+                }
+            }
+            
+            # Rolling
+            if(Driver:keyLeft()){
+                Baseplate:applyAngForce( ang(0,0,-Rollpower) * (Baseplate:mass()) * 11)     
+            }elseif(Driver:keyRight()){
+                Baseplate:applyAngForce( ang(0,0,Rollpower) * (Baseplate:mass()) * 11)  
+            }elseif(!Driver:keyLeft() && !Driver:keyRight()){
+            }
+            
+            # Throttle up
+            if(Driver:keyForward() && Throttle < 0.066){
+                Throttle = Throttle + (ThrottlePower / 2000) / ChassisWeight
+                foreach(K,V:number = Engine_Flames){
+                    holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
+                }
+            
+            # Throttle down
+            }elseif(Driver:keyBack() && Throttle > -0.066){
+                Throttle = Throttle - (ThrottlePower / 2000) / ChassisWeight
+                if(Throttle > 0){
+                    foreach(K,V:number = Engine_Flames){
+                        holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
+                    }
+                }
+            
+            # Stand still
+            }elseif(!Driver:keyBack() && !Driver:keyForward() && Throttle > 0){
+                Throttle = Throttle - (ThrottlePower / 1000) / ChassisWeight
+                foreach(K,V:number = Engine_Flames){
+                    holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
+                }
+                Baseplate:applyForce((-Baseplate:vel())*Baseplate:mass()*0.01)
+            
+            # Stand still Part II
+            }elseif(!Driver:keyBack() && !Driver:keyForward() && Throttle < 0){
+                Throttle = Throttle + (ThrottlePower / 1000) / ChassisWeight
+                foreach(K,V:number = Engine_Flames){
+                    holoScale(V,vec(0) * EngineSizMultis[K,number])
+                }
+            }
+            
+            # Aim
+            rangerFilter(array(Baseplate,owner(),Chair1,Chair2))
+            TaPos = rangerOffset(16384, Driver:shootPos(), Driver:eye()):position()
+
+            P = Baseplate:elevation(TaPos) # ^
+            Y = Baseplate:bearing(TaPos)   # >
+            R = (Rollpower * Baseplate:mass())/100
+            TargAng = -ang(P,Y,0)   
+            
+            # Velocity Dampener and Moving
+            Baseplate:applyAngForce( TargAng * ((Baseplate:mass()) * 4) / ChassisWeight)   
+            Baseplate:applyAngForce(-(Baseplate:angVel()) * (Baseplate:mass()) * 2)
+            Baseplate:applyForce((Baseplate:forward()*(Throttle*EnginePowerSum))*Baseplate:mass())
+            Baseplate:applyForce((Baseplate:up()*((Driver:keyJump() - Driver:keySprint())*(LateralCapabilities / 50)))*Baseplate:mass())
+            
+            # Aim Reticle
+            rangerFilter(array(Baseplate,owner(),Chair1,Chair2))
+            AimSiz = (Driver:pos():distance(AimPos))*0.0005
+            holoPos(123,Driver:aimPos())
+            holoAng(123,(Driver:pos() - AimPos):toAngle() +ang(90,0,0))
+            holoScale(123,vec(0.75)+AimSiz)
+            
+        # Standing still    
+        }else{
+            holoAlpha(123,0)
+            Throttle = 0
+            foreach(K,V:number = Engine_Flames){
+                holoScale(V,vec(0) * EngineSizMultis[K,number])
+            }
+        }
+        
+        # Pitch sound
+        soundPitch(1,75+(Throttle*255))
+        
+        # Velocity Dampener
+        Baseplate:applyForce((-Baseplate:vel() / 50)*Baseplate:mass())
+    }
+    
+    # Re-loop
+    timer("main",10)
+}
+if(clkName():find("de-alpha")){
+        local Parse = clkName():explode(";")[2,string]:toNumber()
+        holoAlpha(Parse,0)
+        holoAlpha(Parse+1,0)
+        #holoDelete(Parse)
+}
+if(clk("cooldown")){
+    Cooldown = 1
+}

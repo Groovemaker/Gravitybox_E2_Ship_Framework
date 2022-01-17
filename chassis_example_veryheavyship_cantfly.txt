@@ -1,0 +1,70 @@
+# Civilian Transport "Gondola C-33" chassis_example_veryheavyship_cantfly
+
+# DO NOT EDIT
+local ID = ChassisIDRange
+########################### END DO NOT EDIT
+
+# Armor
+ShipArmor = 333000
+
+# Define Engine Size
+EngineSizGlobal = 3.5
+
+# Roll power
+Rollpower = 15
+LateralCapabilities = 700
+
+# Size Multiplier
+local SizMulti = 1.5
+
+# Chair Offset
+Chair1Pos = vec(17,0,1.5)
+Chair2Pos = vec(-17,0,1.5)
+
+# How many engines, chairs fit on this chassis?
+Engine_MaxCount = 2
+Chair_MaxCount = 2
+HasWeapons = 0
+ChassisWeight = ShipArmor / 1500
+
+# DO NOT EDIT
+holoCreate(ID)
+holoAlpha(ID,0)
+local Main = ID
+ChassisID = Main
+################# END DO NOT EDIT
+
+ID++
+holoCreate(ID)
+holoModel(ID,"models/XQM/coastertrain2seat.mdl")
+holoMaterial(ID,"models/weapons/v_stunbaton/w_shaft01a")
+holoScale(ID,vec(1,1,1)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(0,0,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+
+
+ID++
+holoCreate(ID)
+Engine_Sockets:pushNumber(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-30,50,20)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,0)
+holoParent(ID,Main)
+
+ID++
+holoCreate(ID)
+Engine_Sockets:pushNumber(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-30,-50,20)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,0)
+holoParent(ID,Main)
