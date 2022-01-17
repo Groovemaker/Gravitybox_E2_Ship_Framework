@@ -226,10 +226,10 @@ if(clk("main")){
         Baseplate:applyForce((-Baseplate:vel() / 50)*Baseplate:mass())   
         # Utility Missiles
         if(Tracking == 0){
-            MissileSpeed = 200
+            MissileSpeed = 400
             Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
         }else{
-            MissileSpeed = 400
+            MissileSpeed = 600
             if(CanTrack == 1){
                 EntPos = TrackingEnt:pos()
                 Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 150) / 1)
