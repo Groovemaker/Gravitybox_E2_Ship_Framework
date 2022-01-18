@@ -233,7 +233,7 @@ if(clk("main")){
             MissileSpeed = 700
             #Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
         }else{
-            MissileSpeed = 500
+            MissileSpeed = 200
             if(CanTrack == 1){
                 EntPos = TrackingEnt:pos()
                 Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 500) / 1)
@@ -275,13 +275,9 @@ if(clk("trackingsys")){
     if(perf()){
         if(Tracking == 0){
             findClearWhiteList()
-            findClearWhiteClassList()
-            findClearBlackList()
-            findClearBlackClassList()
+            findClearWhiteModelList()
             findIncludeClass("player")
             findIncludeClass("prop_vehicle*")
-            findIncludeClass("npc_*")
-            findIncludeClass("rpg_missile")
             findExcludePlayer(Driver)
             findExcludeClass("media*")
             findExcludePlayerProps(owner())
