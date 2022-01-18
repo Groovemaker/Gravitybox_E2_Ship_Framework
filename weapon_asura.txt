@@ -12,7 +12,6 @@ function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         Missile:setAlpha(0)
         Missile:setPos(SoundEntity:toWorld(vec(0,150,-10)))
         Missile:setAng((holoEntity(123):pos() - SoundEntity:pos()):toAngle())
-        Missile:setMass(4096)
         Missile:propGravity(0)
         Missile:propFreeze(0)
         Missile:soundPlay(11,0,"thrusters/mh2.wav")
