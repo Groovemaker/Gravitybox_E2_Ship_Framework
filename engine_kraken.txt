@@ -1,0 +1,77 @@
+# Kraken Engine
+
+# Vars
+
+local EnginePower = 800
+EnginePowerSum = EnginePowerSum + EnginePower
+EngineSound = "thrusters/hover00.wav"
+ThrottlePower = 1
+
+local ID = EngineIDRange
+
+if(Engines:count() < 1){
+    ID = EngineIDRange
+}else{
+    ID = CurID
+}
+
+local EngineSizMulti = EngineSizGlobal
+EngineSizMultis:pushNumber(EngineSizMulti)
+
+JetLength:pushNumber(0.15)
+
+local EngineColor = vec(255,255,255)
+local EngineFlameColor = vec(11,255,255)
+
+holoCreate(ID)
+holoAlpha(ID,0)
+Engines:pushNumber(ID)
+local Main = ID
+
+ID++
+holoCreate(ID)
+holoModel(ID,"cube")
+holoMaterial(ID,"models/weapons/v_stunbaton/w_shaft01a")
+holoScale(ID,vec(0.5,1,1)*EngineSizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(0,0,0)*EngineSizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,0,0)))
+holoColor(ID,vec(155))
+holoParent(ID,Main)
+ID++
+holoCreate(ID)
+holoModel(ID,"cube")
+holoMaterial(ID,"models/weapons/v_stunbaton/w_shaft01a")
+holoScale(ID,vec(0.3,0.8,0.85)*EngineSizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(11,0,0)*EngineSizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,0,0)))
+holoColor(ID,vec(155))
+holoParent(ID,Main)
+ID++
+Engine_Glows:pushNumber(ID)
+holoCreate(ID)
+holoModel(ID,"cube")
+holoColor(ID,EngineFlameColor)
+holoMaterial(ID,"models/props_combine/masterinterface01c")
+holoScale(ID,vec(0.3,0.6,0.4)*EngineSizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-3.8,0,0)*EngineSizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,0,0)))
+holoParent(ID,Main)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jetengine.mdl")
+holoMaterial(ID,"models/weapons/v_stunbaton/w_shaft01a")
+holoScale(ID,vec(0.42,0.37,0.15)*EngineSizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(10,0,0)*EngineSizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(180,0,0)))
+holoParent(ID,Main)
+ID++
+Engine_Flames:pushNumber(ID)
+holoCreate(ID)
+holoModel(ID,"models/effects/vol_light128x512.mdl")
+holoColor(ID,EngineFlameColor)
+holoScale(ID,vec(0.055,0.055,1)*EngineSizMulti)
+holoAlpha(ID,254)
+holoPos(ID,holoEntity(ID-1):toWorld(vec(55,0,0)*EngineSizMulti))
+holoAng(ID,holoEntity(ID-1):toWorld(ang(90,0,0)))
+holoParent(ID,Main)
+CurID = ID+1

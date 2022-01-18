@@ -21,5 +21,5 @@ function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         SoundEntity:soundPlay(3,0,"npc/roller/mine/rmine_predetonate.wav")
         soundPitch(2,randint(175,185))
         soundPitch(3,randint(95,105))
-        timer("tracker",300)
+        timer("tracker",500)
 }

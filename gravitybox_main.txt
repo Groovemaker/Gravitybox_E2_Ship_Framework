@@ -38,14 +38,14 @@ if(first() || duped()){
     EngineIDRange = 200
         
     # Include Chassis Here!
-    #include "chassis_vulture"
+    #include "chassis_delta"
     
     # Include Engines Here!
-    #include "engine_test2"
-    #include "engine_test2"
+    #include "engine_kraken"
+    #include "engine_kraken"
     
     # Include Weapons Here!
-    #include "weapon_amrum"
+    #include "weapon_asura"
     
     # Don't spawn more engines than the chassis can handle to avoid bugs
     if(Engines:count() > Engine_MaxCount){
@@ -195,7 +195,8 @@ if(clk("main")){
             TargAng = -ang(P,Y,0)   
             
             # Velocity Dampener and Moving
-            Baseplate:applyAngForce( TargAng * ((Baseplate:mass()) * 4) / ChassisWeight)   
+            Baseplate:applyAngForce(TargAng * ((Baseplate:mass()) * 4) / ChassisWeight)
+            #Baseplate:applyAngForce((Chair1:angles()-Driver:eyeAngles()) * (Baseplate:mass()) * 2.3)
             Baseplate:applyAngForce(-(Baseplate:angVel()) * (Baseplate:mass()) * 2)
             Baseplate:applyForce((Baseplate:forward()*(Throttle*EnginePowerSum))*Baseplate:mass())
             Baseplate:applyForce((Baseplate:up()*((Driver:keyJump() - Driver:keySprint())*(LateralCapabilities / 50)))*Baseplate:mass())
@@ -225,13 +226,13 @@ if(clk("main")){
         Baseplate:applyForce((-Baseplate:vel() / 50)*Baseplate:mass())   
         # Utility Missiles
         if(Tracking == 0){
-            MissileSpeed = 600
+            MissileSpeed = 700
             #Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
         }else{
-            MissileSpeed = 800
+            MissileSpeed = 500
             if(CanTrack == 1){
                 EntPos = TrackingEnt:pos()
-                Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 150) / 1)
+                Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 300) / 1)
             }else{
                 #Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
             }

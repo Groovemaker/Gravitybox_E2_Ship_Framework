@@ -1,0 +1,155 @@
+# Interceptor "Delta"
+
+# DO NOT EDIT
+local ID = ChassisIDRange
+########################### END DO NOT EDIT
+
+# Armor
+ShipArmor = 2500
+
+# Define Engine Size
+EngineSizGlobal = 3
+
+# Roll power
+Rollpower = 25
+LateralCapabilities = 700
+
+# Size Multiplier
+local SizMulti = 1.5
+
+# Chair Offset
+Chair1Pos = vec(95,0,-20)
+Chair2Pos = vec(65,0,-20)
+
+# Limits
+Engine_MaxCount = 2
+Chair_MaxCount = 2
+HasWeapons = 1
+ChassisWeight = ShipArmor / 1500
+
+# DO NOT EDIT
+holoCreate(ID)
+holoAlpha(ID,0)
+local Main = ID
+ChassisID = Main
+################# END DO NOT EDIT
+
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
+holoScale(ID,vec(20,6,3)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(25,0,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_hdome_thin")
+holoMaterial(ID,"models/debug/debugwhite")
+holoScale(ID,vec(11,3.5,5)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(45,0,2)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec4(0,155,255,65))
+holoParent(ID,Main)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
+holoScale(ID,vec(18,8,1)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(0,0,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jetwing2huge.mdl")
+holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
+holoScale(ID,vec(1.2,1.25,1.3)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(0,85,25)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,-35,15)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jetwing2huge.mdl")
+holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
+holoScale(ID,vec(1.2,1.25,1.3)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(0,-85,25)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,35,165)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jetwing2huge.mdl")
+holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
+holoScale(ID,vec(1.2,1.25,1.3)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(0,85,-25)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,-35,-15)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jetwing2huge.mdl")
+holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
+holoScale(ID,vec(1.2,1.25,1.3)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(0,-85,-25)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,35,-165)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+
+ID++
+holoCreate(ID)
+Engine_Sockets:pushNumber(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-95,15,1)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,0)
+holoParent(ID,Main)
+
+ID++
+holoCreate(ID)
+Engine_Sockets:pushNumber(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-95,-15,1)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,0)
+holoParent(ID,Main)
+
+ID++
+holoCreate(ID)
+Weapon_Sockets:pushNumber(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(125,0,1)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,0)
+holoParent(ID,Main)
+
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jettailpiece1.mdl")
+holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-80,-20,15)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-45,90,0)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jettailpiece1.mdl")
+holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-80,20,15)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(45,90,0)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
