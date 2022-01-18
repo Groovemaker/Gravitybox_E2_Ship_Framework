@@ -4,6 +4,37 @@
 local ID = ChassisIDRange
 ########################### END DO NOT EDIT
 
+# Secondary
+function secondary(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
+        findClearWhiteList()
+        findClearWhiteModelList()
+        findIncludeClass("rpg_missile")
+        findInSphere(SoundEntity:pos(),3000)
+        local X2Ents = findToArray()
+        if(X2Ents[1,entity]:isValid()){
+            Evadee=X2Ents[1,entity]
+            for(I=1,X2Ents:count()){
+                if(X2Ents[I,entity]:pos():distance(SoundEntity:pos())<Evadee:pos():distance(SoundEntity:pos())){Evadee=X2Ents[I,entity]}
+            }
+            holoEntity(Weapon_Sockets[1,number]):soundPlay(4,0,"npc/scanner/combat_scan1.wav")
+            soundPitch(4,randint(95,105))
+        }
+        print(Evadee)
+        Evader:propBreak()
+        Evader = propSpawn("models/hunter/blocks/cube4x4x4.mdl",ang(0,0,0),1)
+        Evader:setAlpha(0)
+        Evader:setPos(SoundEntity:toWorld(vec(-100,0,-100)))
+        Evader:setAng((holoEntity(123):pos() - SoundEntity:pos()):toAngle())
+        Evader:propGravity(0)
+        Evader:propFreeze(0)
+        Evader:setTrails(100,2,1,"trails/laser",vec(255,175,11), 255)  
+        Evader:applyForce((Evader:forward() * Evader:mass())*1)
+        SoundEntity:soundPlay(2,0,"npc/roller/mine/rmine_explode_shock1.wav")
+        SoundEntity:soundPlay(3,0,"npc/roller/mine/rmine_predetonate.wav")
+        soundPitch(2,randint(175,185))
+        soundPitch(3,randint(95,105))
+}
+
 # Armor
 ShipArmor = 2500
 

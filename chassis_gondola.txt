@@ -4,6 +4,11 @@
 local ID = ChassisIDRange
 ########################### END DO NOT EDIT
 
+# Secondary
+function secondary(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
+
+}
+
 # Armor
 ShipArmor = 3000
 
