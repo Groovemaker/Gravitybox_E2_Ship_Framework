@@ -263,10 +263,14 @@ if(clk("trackingsys")){
     if(perf()){
         if(Tracking == 0){
             findClearWhiteList()
+            findClearWhiteClassList()
+            findClearBlackList()
+            findClearBlackClassList()
             findIncludeClass("player")
             findIncludeClass("prop_vehicle*")
             findIncludeClass("npc_*")
             findExcludePlayer(Driver)
+            findExcludeClass("media*")
             findExcludePlayerProps(owner())
             findInSphere(Missile:pos(),TrackingRadius)
             local XEnts = findToArray()
@@ -278,6 +282,8 @@ if(clk("trackingsys")){
                 }
                 #TrackingEnt = findToArray()[1,entity]
                 #print(TrackingEnt)
+                holoEntity(Weapon_Sockets[1,number]):soundPlay(4,0,"npc/scanner/combat_scan1.wav")
+                soundPitch(4,randint(95,105))
             }
         }
         timer("trackingsys",250)

@@ -18,8 +18,8 @@ function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         Missile:setTrails(100,2,1,"trails/laser",vec(200,175,255), 255)  
         Missile:applyForce((Missile:forward() * Missile:mass())*1)
         SoundEntity:soundPlay(2,0,"npc/roller/mine/rmine_explode_shock1.wav")
-        SoundEntity:soundPlay(3,0,"npc/manhack/mh_blade_snick1.wav")
-        soundPitch(2,randint(145,165))
-        soundPitch(3,randint(75,85))
+        SoundEntity:soundPlay(3,0,"npc/roller/mine/rmine_predetonate.wav")
+        soundPitch(2,randint(175,185))
+        soundPitch(3,randint(95,105))
         timer("tracker",300)
 }
