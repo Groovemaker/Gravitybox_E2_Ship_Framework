@@ -45,7 +45,7 @@ if(first() || duped()){
     #include "engine_test2"
     
     # Include Weapons Here!
-    #include "weapon_asura"
+    #include "weapon_amrum"
     
     # Don't spawn more engines than the chassis can handle to avoid bugs
     if(Engines:count() > Engine_MaxCount){
