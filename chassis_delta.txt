@@ -6,7 +6,7 @@ local ID = ChassisIDRange
 
 # Secondary
 function secondary(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
-    Weapon_FireRate2 = 1.5
+    Weapon_FireRate2 = 1
     findClearWhiteList()
     findClearWhiteModelList()
     findIncludeClass("rpg_missile")
