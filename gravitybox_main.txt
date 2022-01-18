@@ -43,11 +43,11 @@ if(first() || duped()){
     #include "chassis_delta"
     
     # Include Engines Here!
-    #include "engine_kraken"
-    #include "engine_kraken"
+    #include "engine_ravager"
+    #include "engine_ravager"
     
     # Include Weapons Here!
-    #include "weapon_asura"
+    #include "weapon_amrum"
     
     # Don't spawn more engines than the chassis can handle to avoid bugs
     if(Engines:count() > Engine_MaxCount){
@@ -55,7 +55,7 @@ if(first() || duped()){
     }
 
     # Baseplate
-    Baseplate = propSpawn("models/props_phx/construct/wood/wood_angle360.mdl",ang(0,0,0),1)
+    Baseplate = propSpawn("models/props_phx/construct/wood/wood_curve360x1.mdl",ang(0,0,0),1)
     Baseplate:setHealth(ShipArmor)
     Baseplate:setAlpha(0)
     Baseplate:setPos(entity():pos())
@@ -67,20 +67,20 @@ if(first() || duped()){
     }
     
     # Parent to Baseplate with offset
-    holoPos(ChassisID,Baseplate:toWorld(vec(0,0,5)))
+    holoPos(ChassisID,Baseplate:toWorld(vec(0,0,25)))
     holoAng(ChassisID,Baseplate:toWorld(ang(0,0,0)))
     holoParent(ChassisID,Baseplate)
     
     # Chairs
     Chair1 = seatSpawn("",1)
-    Chair1:setPos(Baseplate:toWorld(Chair1Pos))
-    Chair1:setAng(Baseplate:toWorld(ang(0,-90,0)))
+    Chair1:setPos(holoEntity(Chair_Sockets[1,number]):pos())
+    Chair1:setAng(holoEntity(Chair_Sockets[1,number]):angles())
     Chair1:setMass(1)
     
     if(Chair_MaxCount > 1){
         Chair2 = seatSpawn("",1)
-        Chair2:setPos(Baseplate:toWorld(Chair2Pos))
-        Chair2:setAng(Baseplate:toWorld(ang(0,-90,0)))
+        Chair2:setPos(holoEntity(Chair_Sockets[2,number]):pos())
+        Chair2:setAng(holoEntity(Chair_Sockets[2,number]):angles())
         Chair2:setMass(1)  
     }
     
@@ -228,7 +228,7 @@ if(clk("main")){
         }
         
         # Pitch sound
-        soundPitch(1,75+(Throttle*255))
+        soundPitch(1,105+(Throttle*255))
         
         # Velocity Dampener
         Baseplate:applyForce((-Baseplate:vel() / 50)*Baseplate:mass())   
