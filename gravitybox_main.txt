@@ -138,7 +138,6 @@ if(clk("main")){
                     timer(Line,(1000/Weapon_FireRate)/2)
                     soundVolume(2,3)
                     timer("cooldown",1000/Weapon_FireRate)
-                    print(AimRan:entity():model())
                 }
             }
             # Missile Evasion
@@ -233,7 +232,7 @@ if(clk("main")){
             MissileSpeed = 700
             #Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
         }else{
-            MissileSpeed = 200
+            MissileSpeed = 400
             if(CanTrack == 1){
                 EntPos = TrackingEnt:pos()
                 Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 500) / 1)
@@ -241,9 +240,9 @@ if(clk("main")){
                 #Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
             }
         }
-        Missile:applyAngForce(-(Missile:angVel()) * (Missile:mass()) * 2)
-        Missile:applyForce((Missile:forward() * Missile:mass())* MissileSpeed)
-        
+        Missile:applyAngForce(-(Missile:angVel()) * (Missile:mass()) * 1.5)
+        Missile:applyForce((Missile:forward() * Missile:mass())* 200)
+            
         Evader:applyAngForce( -ang(Evader:elevation(Evadee:pos()),Evader:bearing(Evadee:pos()),0) * ((Evader:mass()) * 500) / 1)
         Evader:applyAngForce(-(Evader:angVel()) * (Evader:mass()) * 2)
         Evader:applyForce((Evader:forward() * Evader:mass())* 200)
