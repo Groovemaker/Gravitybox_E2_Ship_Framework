@@ -134,7 +134,6 @@ if(clk("main")){
             # Weapons
             if(Driver:keyAttack1()){
                 if(Cooldown == 1){
-                    rangerFilter(array(Baseplate,owner(),Chair1,Chair2))
                     FirePos = holoEntity(123):pos()
                     Cooldown = 0
                     if(HasWeapons == 1){weapon_fire(777,holoEntity(Weapon_Sockets[1,number]),holoEntity(Weapon_Sockets[1,number]):pos(),FirePos)}
@@ -270,9 +269,14 @@ if(clk("trackingsys")){
             findExcludePlayer(Driver)
             findExcludePlayerProps(owner())
             findInSphere(Missile:pos(),TrackingRadius)
-            if(findToArray()[1,entity]:isValid()){
+            local XEnts = findToArray()
+            if(XEnts[1,entity]:isValid()){
                 Tracking = 1
-                TrackingEnt = findToArray()[1,entity]
+                TrackingEnt=XEnts[1,entity]
+                for(I=1,XEnts:count()){
+                    if(XEnts[I,entity]:pos():distance(Missile:pos())<TrackingEnt:pos():distance(Missile:pos())){TrackingEnt=XEnts[I,entity]}
+                }
+                #TrackingEnt = findToArray()[1,entity]
                 #print(TrackingEnt)
             }
         }
