@@ -23,7 +23,7 @@ function secondary(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         Evader:propBreak()
         Evader = propSpawn("models/hunter/blocks/cube4x4x4.mdl",ang(0,0,0),1)
         Evader:setAlpha(0)
-        Evader:setMass(38)
+        Evader:setMass(550)
         Evader:setPos(SoundEntity:toWorld(vec(-400,0,100)))
         Evader:setAng((holoEntity(123):pos() - SoundEntity:pos()):toAngle())
         Evader:propGravity(0)

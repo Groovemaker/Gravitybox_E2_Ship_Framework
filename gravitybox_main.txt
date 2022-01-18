@@ -246,7 +246,7 @@ if(clk("main")){
         if(Evadee:isValid()){
             Evader:applyAngForce( -ang(Evader:elevation(Evadee:pos()),Evader:bearing(Evadee:pos()),0) * ((Evader:mass()) * 350) / 1)
             Evader:applyAngForce(-(Evader:angVel()) * (Evader:mass()) * 1)
-            Evader:applyForce((Evader:forward() * Evader:mass())* 500)
+            Evader:applyForce((Evader:forward() * Evader:mass())* 300)
         }
     }
     
