@@ -6,7 +6,7 @@ function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         Tracking = 0
         IsTracking = 0
         CanTrack = 0
-        TrackingRadius = 3500
+        TrackingRadius = 1500
         Missile:propBreak()
         Missile = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
         Missile:setAlpha(0)
@@ -17,9 +17,9 @@ function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         Missile:soundPlay(11,0,"thrusters/mh2.wav")
         Missile:setTrails(100,2,1,"trails/laser",vec(200,175,255), 255)  
         Missile:applyForce((Missile:forward() * Missile:mass())*1)
-        SoundEntity:soundPlay(2,0,"npc/combine_gunship/ping_search.wav")
+        SoundEntity:soundPlay(2,0,"npc/roller/mine/rmine_explode_shock1.wav")
         SoundEntity:soundPlay(3,0,"npc/manhack/mh_blade_snick1.wav")
-        soundPitch(2,randint(133,166))
-        soundPitch(3,randint(77,85))
-        timer("tracker",450)
+        soundPitch(2,randint(145,165))
+        soundPitch(3,randint(75,85))
+        timer("tracker",300)
 }

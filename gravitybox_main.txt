@@ -41,8 +41,8 @@ if(first() || duped()){
     #include "chassis_vulture"
     
     # Include Engines Here!
-    #include "engine_ravager"
-    #include "engine_ravager"
+    #include "engine_test2"
+    #include "engine_test2"
     
     # Include Weapons Here!
     #include "weapon_asura"
@@ -232,9 +232,9 @@ if(clk("main")){
             MissileSpeed = 800
             if(CanTrack == 1){
                 EntPos = TrackingEnt:pos()
-                #Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 150) / 1)
+                Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 150) / 1)
             }else{
-                Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
+                #Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
             }
         }
         Missile:applyAngForce(-(Missile:angVel()) * (Missile:mass()) * 1)
@@ -265,7 +265,8 @@ if(clk("trackingsys")){
         if(Tracking == 0){
             findClearWhiteList()
             findIncludeClass("player")
-            findIncludeClass("prop_*")
+            findIncludeClass("prop_vehicle*")
+            findIncludeClass("npc_*")
             findExcludePlayer(Driver)
             findExcludePlayerProps(owner())
             findInSphere(Missile:pos(),TrackingRadius)
