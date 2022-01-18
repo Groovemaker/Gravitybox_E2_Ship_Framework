@@ -243,10 +243,11 @@ if(clk("main")){
         }
         Missile:applyAngForce(-(Missile:angVel()) * (Missile:mass()) * 1)
         Missile:applyForce((Missile:forward() * Missile:mass())* MissileSpeed)
+        print(Missile:mass())
         if(Evadee:isValid()){
-            Evader:applyAngForce( -ang(Evader:elevation(Evadee:pos()),Evader:bearing(Evadee:pos()),0) * ((Evader:mass()) * 500) / 1)
-            Evader:applyAngForce(-(Evader:angVel()) * (Evader:mass()) * 2)
-            Evader:applyForce((Evader:forward() * Evader:mass())* 200)
+            Evader:applyAngForce( -ang(Evader:elevation(Evadee:pos()),Evader:bearing(Evadee:pos()),0) * ((Evader:mass()) * 350) / 1)
+            Evader:applyAngForce(-(Evader:angVel()) * (Evader:mass()) * 1)
+            Evader:applyForce((Evader:forward() * Evader:mass())* 500)
         }
     }
     
