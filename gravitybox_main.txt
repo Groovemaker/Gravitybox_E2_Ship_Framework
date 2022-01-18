@@ -138,14 +138,17 @@ if(clk("main")){
                     timer(Line,(1000/Weapon_FireRate)/2)
                     soundVolume(2,3)
                     timer("cooldown",1000/Weapon_FireRate)
-                    print(AimRan:entity():model())
                 }
             }
             # Missile Evasion
-            if(Driver:keyReload()){
+            if(Driver:keyAttack2()){
                 if(Cooldown2 == 1){
+                    FirePos = holoEntity(123):pos()
                     Cooldown2 = 0
                     if(HasWeapons == 1){secondary(777,holoEntity(Weapon_Sockets[1,number]),holoEntity(Weapon_Sockets[1,number]):pos(),FirePos)}
+                    local Line = "de-alpha;"+777
+                    timer(Line,(1000/Weapon_FireRate)/2)
+                    soundVolume(2,3)
                     timer("cooldown2",1000/Weapon_FireRate)
                 }
             }            
