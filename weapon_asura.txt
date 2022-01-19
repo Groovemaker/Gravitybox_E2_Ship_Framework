@@ -10,7 +10,7 @@ function weapon_fire(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
         Missile:propBreak()
         Missile = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
         Missile:setAlpha(0)
-        Missile:setPos(SoundEntity:toWorld(vec(0,150,-10)))
+        Missile:setPos(SoundEntity:toWorld(vec(0,250,-10)))
         Missile:setAng((holoEntity(123):pos() - SoundEntity:pos()):toAngle())
         Missile:propGravity(0)
         Missile:propFreeze(0)
