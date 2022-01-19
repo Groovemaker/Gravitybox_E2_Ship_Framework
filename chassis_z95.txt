@@ -6,7 +6,7 @@ local ID = ChassisIDRange
 
 
 function secondary(Index,SoundEntity:entity,StartPos:vector,StartPos2:vector,HitPos:vector){
-    Weapon_FireRate2 = 5
+    Weapon_FireRate2 = 4
     switch(Iter){
         case 1, Iter = 0 break
         case 0, Iter = 1 break
