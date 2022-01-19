@@ -124,6 +124,9 @@ if(clk("main")){
         }
         
         # Flight
+        if(changed(Chair1:driver()) && Chair1:driver():isPlayer()){
+            Baseplate:propFreeze(0)
+        }
         if(Chair1:driver()){
             holoAlpha(123,254)
             Driver = Chair1:driver()
