@@ -65,6 +65,9 @@ Chair_MaxCount = 2
 HasWeapons = 1
 ChassisWeight = ShipArmor / 1500
 
+
+Skin = vec(255,11,11)
+
 # DO NOT EDIT
 holoCreate(ID)
 holoAlpha(ID,0)
@@ -85,10 +88,19 @@ ID++
 holoCreate(ID)
 holoModel(ID,"hq_rcube")
 holoMaterial(ID,"models/props_canal/canal_bridge_railing_01c")
-holoScale(ID,vec(2,4,15)*SizMulti)
+holoScale(ID,vec(2,4,17)*SizMulti)
 holoPos(ID,holoEntity(Main):toWorld(vec(-30,0,0)*SizMulti))
 holoAng(ID,holoEntity(Main):toWorld(ang(90,0,0)))
 holoColor(ID,vec(255))
+holoParent(ID,Main)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_rcube")
+holoMaterial(ID,"models/props_canal/canal_bridge_railing_01c")
+holoScale(ID,vec(2.2,2,17)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-15,0,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(90,0,0)))
+holoColor(ID,Skin)
 holoParent(ID,Main)
 ID++
 holoCreate(ID)
@@ -117,6 +129,27 @@ holoPos(ID,holoEntity(Main):toWorld(vec(-55,-125,0)*SizMulti))
 holoAng(ID,holoEntity(Main):toWorld(ang(-90,105,0)))
 holoColor(ID,vec(255))
 holoParent(ID,Main)
+
+# front wings
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jettailpiece1huge.mdl")
+holoMaterial(ID,"models/props_canal/canal_bridge_railing_01c")
+holoScale(ID,vec(0.4,0.4,0.25)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(125,12.77,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(90,75,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jettailpiece1huge.mdl")
+holoMaterial(ID,"models/props_canal/canal_bridge_railing_01c")
+holoScale(ID,vec(0.4,0.4,0.25)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(125,-12.77,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,105,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+
 ID++
 holoCreate(ID)
 holoModel(ID,"models/props_c17/canister01a.mdl")
