@@ -41,7 +41,7 @@ if(first() || duped()){
     EngineIDRange = 200
         
     # Include Chassis Here!
-    #include "chassis_z95"
+    #include "runics_z95"
     
     # Include Engines Here!
     #include "engine_headhunter"
@@ -102,7 +102,7 @@ if(first() || duped()){
     timer("main",1)
     timer("trackingsys",1)
     
-    Baseplate:propFreeze(0)
+    #Baseplate:propFreeze(0)
     Chair1:propFreeze(0)
     Chair2:propFreeze(0)
     
