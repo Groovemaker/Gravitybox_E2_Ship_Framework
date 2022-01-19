@@ -5,7 +5,7 @@
 
 # Main
 
-@persist [NUM_ EngineIDRange Engine_MaxCount HasWeapons Chair_MaxCount ChassisID CurID EnginePowerSum LateralCapabilities Cooldown2 Weapon_FireRate2]
+@persist [NUM_ EngineIDRange Engine_MaxCount HasWeapons Chair_MaxCount ChassisID CurID EnginePowerSum LateralCapabilities Cooldown2 Weapon_FireRate2 Iter]
 @persist [CanTrack MissileSpeed TrackingRadius ChassisWeight Tracking EngineSizGlobal Cooldown ShipArmor Weapon_FireRate ThrottlePower] 
 @persist [ARR_ Engines Weapons Chairs Chair_Sockets Weapon_Sockets Engine_Sockets Engine_Glows Engine_Flames JetLength EngineSizMultis]:array
 @persist [STR_ EngineSound]:string
@@ -33,6 +33,7 @@
 # First
 if(first() || duped()){
     Throttle = 0
+    Iter = 1
     Cooldown = 1
     Cooldown2 = 1
     # Holo ID Ranges, dont change.
@@ -146,7 +147,7 @@ if(clk("main")){
                 if(Cooldown2 == 1){
                     FirePos = holoEntity(123):pos()
                     Cooldown2 = 0
-                    if(HasWeapons == 1){secondary(777,holoEntity(Weapon_Sockets[1,number]),holoEntity(Weapon_Sockets[1,number]):pos(),FirePos)}
+                    if(HasWeapons == 1){secondary(777,holoEntity(Weapon_Sockets[1,number]),holoEntity(Weapon_Sockets[1,number]):pos(),holoEntity(Weapon_Sockets[2,number]):pos(),FirePos)}
                     local Line = "de-alpha;"+777
                     timer(Line,(1000/Weapon_FireRate2)/2)
                     soundVolume(2,3)
@@ -265,6 +266,8 @@ if(clkName():find("de-alpha")){
         local Parse = clkName():explode(";")[2,string]:toNumber()
         holoAlpha(Parse,0)
         holoAlpha(Parse+1,0)
+        holoAlpha(Parse+2,0)
+        holoAlpha(Parse+3,0)
         #holoDelete(Parse)
 }
 if(clk("cooldown")){

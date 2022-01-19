@@ -5,40 +5,75 @@ local ID = ChassisIDRange
 ########################### END DO NOT EDIT
 
 
-function secondary(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
+function secondary(Index,SoundEntity:entity,StartPos:vector,StartPos2:vector,HitPos:vector){
     Weapon_FireRate2 = 6
-    holoCreate(Index)
-    holoModel(Index,"models/props_trainstation/trainstation_column001.mdl")
-    holoMaterial(Index,"models/props_combine/tpballglow")
-    holoScale(Index,vec(0.5,0.5,50))
-    holoColor(Index,vec4(255,1,1,254))
-    holoDisableShading(Index,1)
-    holoAlpha(Index,150)
-    holoClipEnabled(Index,1,1)
-    local BTX = -elevation(StartPos,ang(0,0,0),HitPos) + 90
-    local BTY = -bearing(StartPos,ang(0,0,0),HitPos)
-        
-    holoPos(Index,StartPos)
-    holoAng(Index,ang(BTX,BTY,0))
-    holoClip(Index,1,HitPos,-holoEntity(21):up(),1)
-
-    holoCreate(Index+1)
-    holoModel(Index+1,"models/props_trainstation/trainstation_column001.mdl")
-    holoMaterial(Index+1,"models/props_combine/tpballglow")
-    holoScale(Index+1,vec(0.2,0.2,50))
-    holoColor(Index+1,vec4(255,211,211,254))
-    holoDisableShading(Index+1,1)
-    holoAlpha(Index+1,255)
-    holoClipEnabled(Index+1,1,1)
-        
-    holoPos(Index+1,StartPos)
-    holoAng(Index+1,ang(BTX,BTY,0))
-    holoClip(Index,1,HitPos,-holoEntity(21):up(),1)
+    switch(Iter){
+        case 1, Iter = 0 break
+        case 0, Iter = 1 break
+    }
+    if(Iter == 1){
+        holoCreate(Index)
+        holoModel(Index,"models/props_trainstation/trainstation_column001.mdl")
+        holoMaterial(Index,"models/props_combine/tpballglow")
+        holoScale(Index,vec(0.5,0.5,50))
+        holoColor(Index,vec4(255,1,1,254))
+        holoDisableShading(Index,1)
+        holoAlpha(Index,150)
+        holoClipEnabled(Index,1,1)
+        local BTX = -elevation(StartPos,ang(0,0,0),HitPos) + 90
+        local BTY = -bearing(StartPos,ang(0,0,0),HitPos)
+            
+        holoPos(Index,StartPos)
+        holoAng(Index,ang(BTX,BTY,0))
+        holoClip(Index,1,HitPos,-holoEntity(21):up(),1)
     
+        holoCreate(Index+1)
+        holoModel(Index+1,"models/props_trainstation/trainstation_column001.mdl")
+        holoMaterial(Index+1,"models/props_combine/tpballglow")
+        holoScale(Index+1,vec(0.2,0.2,50))
+        holoColor(Index+1,vec4(255,211,211,254))
+        holoDisableShading(Index+1,1)
+        holoAlpha(Index+1,255)
+        holoClipEnabled(Index+1,1,1)
+        
+        holoPos(Index+1,StartPos)
+        holoAng(Index+1,ang(BTX,BTY,0))
+        holoClip(Index+1,1,HitPos,-holoEntity(21):up(),1)
+    }
+    ## Second Beam
+    if(Iter == 0){    
+        holoCreate(Index+2)
+        holoModel(Index+2,"models/props_trainstation/trainstation_column001.mdl")
+        holoMaterial(Index+2,"models/props_combine/tpballglow")
+        holoScale(Index+2,vec(0.5,0.5,50))
+        holoColor(Index+2,vec4(255,1,1,254))
+        holoDisableShading(Index+2,1)
+        holoAlpha(Index+2,150)
+        holoClipEnabled(Index+2,1,1)
+        local BTX2 = -elevation(StartPos2,ang(0,0,0),HitPos) + 90
+        local BTY2 = -bearing(StartPos2,ang(0,0,0),HitPos)
+            
+        holoPos(Index+2,StartPos2)
+        holoAng(Index+2,ang(BTX2,BTY2,0))
+        holoClip(Index+2,1,HitPos,-holoEntity(21):up(),1)
+    
+        holoCreate(Index+3)
+        holoModel(Index+3,"models/props_trainstation/trainstation_column001.mdl")
+        holoMaterial(Index+3,"models/props_combine/tpballglow")
+        holoScale(Index+3,vec(0.2,0.2,50))
+        holoColor(Index+3,vec4(255,211,211,254))
+        holoDisableShading(Index+3,1)
+        holoAlpha(Index+3,255)
+        holoClipEnabled(Index+3,1,1)
+            
+        holoPos(Index+3,StartPos2)
+        holoAng(Index+3,ang(BTX2,BTY2,0))
+        holoClip(Index+3,1,HitPos,-holoEntity(21):up(),1)
+    }
     propSpawn("models/props_phx/torpedo.mdl",HitPos,ang(0,0,0),1):propBreak()
     SoundEntity:soundPlay(2,0.9,"npc/strider/strider_minigun.wav")
     SoundEntity:soundPlay(3,0.9,"weapons/physcannon/superphys_launch3.wav")
-    soundPitch(2,randint(188,255))
+    soundPitch(2,randint(111,155))
     soundPitch(3,randint(144,200))
 }
 
@@ -262,13 +297,26 @@ holoColor(ID,vec(255))
 holoAlpha(ID,0)
 holoParent(ID,Main)
 holoDisableShading(ID,0)
+
 ID++
 holoCreate(ID)
 Weapon_Sockets:pushNumber(ID)
 holoModel(ID,"hq_sphere")
 holoMaterial(ID,"")
 holoScale(ID,vec(2,2,2)*SizMulti)
-holoPos(ID,holoEntity(Main):toWorld(vec(125,0,1)*SizMulti))
+holoPos(ID,holoEntity(Main):toWorld(vec(-65,-210,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,0)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+Weapon_Sockets:pushNumber(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-65,210,0)*SizMulti))
 holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
 holoColor(ID,vec(255))
 holoAlpha(ID,0)
@@ -299,3 +347,4 @@ holoColor(ID,vec(255))
 holoAlpha(ID,1)
 holoParent(ID,Main)
 holoDisableShading(ID,0)
+

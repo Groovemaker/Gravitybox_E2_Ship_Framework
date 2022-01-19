@@ -5,7 +5,7 @@ local ID = ChassisIDRange
 ########################### END DO NOT EDIT
 
 # Secondary
-function secondary(Index,SoundEntity:entity,StartPos:vector,HitPos:vector){
+function secondary(Index,SoundEntity:entity,StartPos:vector,StartPos2:vector,HitPos:vector){
 }
 
 # Armor
