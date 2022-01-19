@@ -41,7 +41,7 @@ if(first() || duped()){
     EngineIDRange = 200
         
     # Include Chassis Here!
-    #include "runics_z95"
+    #include "chassis_z95"
     
     # Include Engines Here!
     #include "engine_headhunter"
@@ -76,13 +76,13 @@ if(first() || duped()){
     Chair1 = seatSpawn("",1)
     Chair1:setPos(holoEntity(Chair_Sockets[1,number]):pos())
     Chair1:setAng(holoEntity(Chair_Sockets[1,number]):angles())
-    Chair1:setMass(1)
+    Chair1:setMass(0.001)
     
     if(Chair_MaxCount > 1){
         Chair2 = seatSpawn("",1)
         Chair2:setPos(holoEntity(Chair_Sockets[2,number]):pos())
         Chair2:setAng(holoEntity(Chair_Sockets[2,number]):angles())
-        Chair2:setMass(1)  
+        Chair2:setMass(0.001)  
     }
     
     # Weld Chairs to Baseplate
