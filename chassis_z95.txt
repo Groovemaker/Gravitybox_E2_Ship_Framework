@@ -53,7 +53,7 @@ Rollpower = 25
 LateralCapabilities = 700
 
 # Size Multiplier
-local SizMulti = 1.5
+local SizMulti = 2
 
 # Chair Offset
 Chair1Pos = vec(95,0,-20)
@@ -88,7 +88,7 @@ holoModel(ID,"models/xqm/jettailpiece1huge.mdl")
 holoMaterial(ID,"models/props_canal/canal_bridge_railing_01c")
 holoScale(ID,vec(1,1,1.15)*SizMulti)
 holoPos(ID,holoEntity(Main):toWorld(vec(-55,115,0)*SizMulti))
-holoAng(ID,holoEntity(Main):toWorld(ang(90,90,0)))
+holoAng(ID,holoEntity(Main):toWorld(ang(90,75,0)))
 holoColor(ID,vec(255))
 holoParent(ID,Main)
 ID++
@@ -97,7 +97,7 @@ holoModel(ID,"models/xqm/jettailpiece1huge.mdl")
 holoMaterial(ID,"models/props_canal/canal_bridge_railing_01c")
 holoScale(ID,vec(1,1,1.15)*SizMulti)
 holoPos(ID,holoEntity(Main):toWorld(vec(-55,-115,0)*SizMulti))
-holoAng(ID,holoEntity(Main):toWorld(ang(-90,90,0)))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,105,0)))
 holoColor(ID,vec(255))
 holoParent(ID,Main)
 
