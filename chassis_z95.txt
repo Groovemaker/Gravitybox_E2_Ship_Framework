@@ -101,7 +101,7 @@ HasWeapons = 1
 ChassisWeight = ShipArmor / 1500
 
 
-Skin = vec(255,11,11)
+Skin = vec(255,111,111)
 
 # DO NOT EDIT
 holoCreate(ID)
