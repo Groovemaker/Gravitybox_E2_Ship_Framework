@@ -101,7 +101,6 @@ holoAng(ID,holoEntity(Main):toWorld(ang(-90,90,0)))
 holoColor(ID,vec(255))
 holoParent(ID,Main)
 
-
 ID++
 holoCreate(ID)
 Engine_Sockets:pushNumber(ID)
@@ -109,6 +108,18 @@ holoModel(ID,"hq_sphere")
 holoMaterial(ID,"")
 holoScale(ID,vec(2,2,2)*SizMulti)
 holoPos(ID,holoEntity(Main):toWorld(vec(-55,-30,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,0)
+holoParent(ID,Main)
+
+ID++
+holoCreate(ID)
+Engine_Sockets:pushNumber(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-55,30,0)*SizMulti))
 holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
 holoColor(ID,vec(255))
 holoAlpha(ID,0)
