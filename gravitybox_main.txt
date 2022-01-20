@@ -41,7 +41,7 @@ if(first() || duped()){
     EngineIDRange = 200
         
     # Include Chassis Here!
-    #include "chassis_z95_bs"
+    #include "chassis_z95"
     
     # Include Engines Here!
     #include "engine_headhunter"
@@ -128,13 +128,16 @@ if(clk("main")){
                 holoAlpha(123,254)
             }else{
                 HasDriver = 0
+                Throttle = 0
+                foreach(K,V:number = Engine_Flames){
+                    holoScale(V,vec(0) * EngineSizMultis[K,number])
+                }
                 holoAlpha(123,0)
             }
         }
         if(HasDriver == 1){
             rangerFilter(array(Baseplate,Chair1,Chair2,Driver))
             AimPos = rangerOffset(16384, Driver:shootPos(), Driver:eye()):position()
-            
             # Weapons
             if(Driver:keyAttack1()){
                 if(Cooldown == 1){
@@ -156,44 +159,55 @@ if(clk("main")){
                     timer(Line,(1000/Weapon_FireRate2)/2)
                     timer("cooldown2",1000/Weapon_FireRate2)
                 }
-            }  
-                      
+            }       
+            
             # Rolling
             if(Driver:keyLeft()){
                 Baseplate:applyAngForce( ang(0,0,-Rollpower) * (Baseplate:mass()) * 11)     
             }elseif(Driver:keyRight()){
                 Baseplate:applyAngForce( ang(0,0,Rollpower) * (Baseplate:mass()) * 11)  
             }
-            if(Driver:keyForward() && Throttle < 0.066){                                    # Throttle Up
-                Throttle = Throttle + (ThrottlePower / 2000) / ChassisWeight
-                foreach(K,V:number = Engine_Flames){
-                    holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
-                }
-            }elseif(Driver:keyBack() && Throttle > -0.066){                                 # Throttle Down
-                Throttle = Throttle - (ThrottlePower / 2000) / ChassisWeight
-                if(Throttle > 0){
+            
+            if(Driver:keyForward()){                                    # Throttle Up
+                if(Throttle < 0.066){
+                    Throttle = Throttle + (ThrottlePower / 2000) / ChassisWeight
                     foreach(K,V:number = Engine_Flames){
                         holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
                     }
                 }
-            }elseif(!Driver:keyBack() && !Driver:keyForward() && Throttle > 0){             # Standing Still Over 0
-                Throttle = Throttle - (ThrottlePower / 1000) / ChassisWeight
-                foreach(K,V:number = Engine_Flames){
-                    holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
+            }elseif(Driver:keyBack()){                                 # Throttle Down
+                if(Throttle > -0.066){
+                    Throttle = Throttle - (ThrottlePower / 2000) / ChassisWeight
+                    if(Throttle > 0){
+                        foreach(K,V:number = Engine_Flames){
+                            holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
+                        }
+                    }
                 }
-                Baseplate:applyForce((-Baseplate:vel())*Baseplate:mass()*0.01)
-            }elseif(!Driver:keyBack() && !Driver:keyForward() && Throttle < 0){             # Standing Still Below 0
-                Throttle = Throttle + (ThrottlePower / 1000) / ChassisWeight
-                foreach(K,V:number = Engine_Flames){
-                    holoScale(V,vec(0) * EngineSizMultis[K,number])
+            }
+            
+            if(Throttle != 0){
+                if(!Driver:keyBack() && !Driver:keyForward()){             # Standing Still Over 0
+                    if(Throttle > 0){
+                        Throttle = Throttle - (ThrottlePower / 1000) / ChassisWeight
+                        foreach(K,V:number = Engine_Flames){
+                            holoScale(V,vec(0))
+                        }
+                        Baseplate:applyForce((-Baseplate:vel())*Baseplate:mass()*0.01)
+                    }
+                }elseif(!Driver:keyBack() && !Driver:keyForward()){             # Standing Still Below 0
+                    if(Throttle < 0){
+                        Throttle = Throttle + (ThrottlePower / 1000) / ChassisWeight
+                        foreach(K,V:number = Engine_Flames){
+                            holoScale(V,vec(0))
+                        }
+                    }
                 }
             }
             
             # Aim
-            rangerFilter(array(Baseplate,owner(),Chair1,Chair2))
-            TaPos = rangerOffset(16384, Driver:shootPos(), Driver:eye()):position()
             R = (Rollpower * Baseplate:mass())/100
-            TargAng = -ang(Baseplate:elevation(TaPos),Baseplate:bearing(TaPos),0)   
+            TargAng = -ang(Baseplate:elevation(AimPos),Baseplate:bearing(AimPos),0)   
             
             # Velocity Dampener and Moving
             Baseplate:applyAngForce(TargAng * ((Baseplate:mass()) * 4) / ChassisWeight)
@@ -203,15 +217,7 @@ if(clk("main")){
             
             # Aim Reticle
             holoPos(123,AimPos)
-            holoAng(123,(Driver:pos() - AimPos):toAngle() +ang(90,0,0))
-            holoScale(123,vec(0.75)+Driver:pos():distance(AimPos)*0.0005)
-            
-        # Standing still    
-        }else{
-            Throttle = 0
-            foreach(K,V:number = Engine_Flames){
-                holoScale(V,vec(0) * EngineSizMultis[K,number])
-            }
+            holoScale(123,vec(0.75)+Driver:pos():distance(AimPos)*0.0005)   
         }
         
         # Pitch sound
@@ -237,7 +243,6 @@ if(clk("main")){
             }
         }
     }
-    
     # Re-loop
     timer("main",10)
 }
@@ -259,37 +264,42 @@ if(clk("tracker")){
 }
 
 if(clk("anim")){
-    # Engine Flames
-    for(I=1,Engine_Flames:count()){
-        holoAng(Engine_Flames[I,number],holoEntity(Engine_Flames[I,number]):toWorld(ang(0,300,0)))
+    if(perf()){
+        # Engine Flames
+        for(I=1,Engine_Flames:count()){
+            holoAng(Engine_Flames[I,number],holoEntity(Engine_Flames[I,number]):toWorld(ang(0,300,0)))
+        }
+        holoVisible(123,players(),0)
+        holoVisible(123,Driver,1)
+        print(ops())
     }
-    holoVisible(123,players(),0)
-    holoVisible(123,Driver,1)
     timer("anim",100)
 }
 
 if(clk("trackingsys")){
-    if(perf() && Missile:isValidPhysics()){
-        if(Tracking == 0){
-            findClearWhiteList()
-            findClearWhiteModelList()
-            findIncludeEntities(players())
-            findIncludeClass("prop_vehicle*")
-            findExcludePlayer(Driver)
-            findExcludeClass("media*")
-            findExcludePlayerProps(owner())
-            findInSphere(Missile:pos(),TrackingRadius)
-            local XEnts = findToArray()
-            if(XEnts[1,entity]:isValid()){
-                Tracking = 1
-                TrackingEnt=XEnts[1,entity]
-                for(I=1,XEnts:count()){
-                    if(XEnts[I,entity]:pos():distance(Missile:pos())<TrackingEnt:pos():distance(Missile:pos())){TrackingEnt=XEnts[I,entity]}
+    if(perf()){
+        if(Missile:isValidPhysics()){
+            if(Tracking == 0){
+                findClearWhiteList()
+                findClearWhiteModelList()
+                findIncludeEntities(players())
+                findIncludeClass("prop_vehicle*")
+                findExcludePlayer(Driver)
+                findExcludeClass("media*")
+                findExcludePlayerProps(owner())
+                findInSphere(Missile:pos(),TrackingRadius)
+                local XEnts = findToArray()
+                if(XEnts[1,entity]:isValid()){
+                    Tracking = 1
+                    TrackingEnt=XEnts[1,entity]
+                    for(I=1,XEnts:count()){
+                        if(XEnts[I,entity]:pos():distance(Missile:pos())<TrackingEnt:pos():distance(Missile:pos())){TrackingEnt=XEnts[I,entity]}
+                    }
+                    #TrackingEnt = findToArray()[1,entity]
+                    #print(TrackingEnt)
+                    holoEntity(Weapon_Sockets[1,number]):soundPlay(4,0,"npc/scanner/combat_scan1.wav")
+                    soundPitch(4,randint(95,105))
                 }
-                #TrackingEnt = findToArray()[1,entity]
-                #print(TrackingEnt)
-                holoEntity(Weapon_Sockets[1,number]):soundPlay(4,0,"npc/scanner/combat_scan1.wav")
-                soundPitch(4,randint(95,105))
             }
         }
     }
