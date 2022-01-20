@@ -75,10 +75,13 @@ function secondary(Index,SoundEntity:entity,StartPos:vector,StartPos2:vector,Hit
         holoClip(Index+3,1,HitPos,-holoEntity(21):up(),1)
     }
     propSpawn("models/props_phx/torpedo.mdl",HitPos,ang(0,0,0),1):propBreak()
-    SoundEntity:soundPlay(2,0.9,"npc/strider/strider_minigun.wav")
-    SoundEntity:soundPlay(3,0.9,"weapons/physcannon/superphys_launch3.wav")
-    soundPitch(2,randint(111,155))
-    soundPitch(3,randint(144,200))
+    soundStop(2)
+    soundStop(3)
+    soundStop(4)
+    SoundEntity:soundPlay(2,0.1,"weapons/stunstick/alyx_stunner2.wav")
+    SoundEntity:soundPlay(3,0.9,"npc/strider/strider_minigun.wav")
+    soundPitch(2,randint(25,25))
+    soundPitch(3,randint(155,195))
 }
 
 # Armor
