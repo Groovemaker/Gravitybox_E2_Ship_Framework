@@ -82,7 +82,7 @@ function secondary(Index,SoundEntity:entity,StartPos:vector,StartPos2:vector,Hit
 }
 
 # Armor
-ShipArmor = 1500
+ShipArmor = 1000
 
 # Define Engine Size
 EngineSizGlobal = 3
@@ -95,8 +95,8 @@ LateralCapabilities = 700
 local SizMulti = 2
 
 # Chair Offset
-Chair1Pos = vec(95,0,-20)
-Chair2Pos = vec(65,0,-20)
+Chair1Pos = vec(45,0,-20)
+Chair2Pos = vec(15,0,-20)
 
 # Limits
 Engine_MaxCount = 2
@@ -260,18 +260,18 @@ ID++
 holoCreate(ID)
 holoModel(ID,"hq_hdome_thin")
 holoMaterial(ID,"models/shiny")
-holoScale(ID,vec(8,3,2.7)*SizMulti)
-holoPos(ID,holoEntity(Main):toWorld(vec(26,0,10)*SizMulti))
+holoScale(ID,vec(9,2.45,3.2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(18,0,10)*SizMulti))
 holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
 holoColor(ID,vec(55))
-holoAlpha(ID,200)
+holoAlpha(ID,111)
 holoParent(ID,Main)
 holoDisableShading(ID,0)
 ID++
 holoCreate(ID)
 holoModel(ID,"hq_dome")
 holoMaterial(ID,"models/props_lab/door_klab01")
-holoScale(ID,vec(2.8,2.9,17)*SizMulti)
+holoScale(ID,vec(3.4,2.5,17)*SizMulti)
 holoPos(ID,holoEntity(Main):toWorld(vec(12.5,0,10)*SizMulti))
 holoAng(ID,holoEntity(Main):toWorld(ang(-90,0,0)))
 holoColor(ID,Skin)
@@ -333,7 +333,7 @@ Chair_Sockets:pushNumber(ID)
 holoModel(ID,"")
 holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
 holoScale(ID,vec(2,2,2)*SizMulti)
-holoPos(ID,holoEntity(Main):toWorld(vec(55,0,-10)*SizMulti))
+holoPos(ID,holoEntity(Main):toWorld(vec(50,0,-10)*SizMulti))
 holoAng(ID,holoEntity(Main):toWorld(ang(0,-90,0)))
 holoColor(ID,vec(255))
 holoAlpha(ID,1)
@@ -345,7 +345,7 @@ Chair_Sockets:pushNumber(ID)
 holoModel(ID,"")
 holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
 holoScale(ID,vec(2,2,2)*SizMulti)
-holoPos(ID,holoEntity(Main):toWorld(vec(34,0,-10)*SizMulti))
+holoPos(ID,holoEntity(Main):toWorld(vec(25,0,-10)*SizMulti))
 holoAng(ID,holoEntity(Main):toWorld(ang(0,-90,0)))
 holoColor(ID,vec(255))
 holoAlpha(ID,1)
