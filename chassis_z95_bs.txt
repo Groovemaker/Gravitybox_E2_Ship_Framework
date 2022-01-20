@@ -1,0 +1,398 @@
+# Z-95 Headhunter
+
+# DO NOT EDIT
+local ID = ChassisIDRange
+########################### END DO NOT EDIT
+
+
+function secondary(Index,SoundEntity:entity,StartPos:vector,StartPos2:vector,HitPos:vector){
+    Weapon_FireRate2 = 4
+    switch(Iter){
+        case 1, Iter = 0 break
+        case 0, Iter = 1 break
+    }
+    if(Iter == 1){
+        holoCreate(Index)
+        holoModel(Index,"models/props_trainstation/trainstation_column001.mdl")
+        holoMaterial(Index,"models/props_combine/tpballglow")
+        holoScale(Index,vec(0.5,0.5,50))
+        holoColor(Index,vec4(255,1,1,254))
+        holoDisableShading(Index,1)
+        holoAlpha(Index,150)
+        holoParent(Index,Baseplate)
+        holoClipEnabled(Index,1,1)
+        local BTX = -elevation(StartPos,ang(0,0,0),HitPos) + 90
+        local BTY = -bearing(StartPos,ang(0,0,0),HitPos)
+            
+        holoPos(Index,StartPos)
+        holoAng(Index,ang(BTX,BTY,0))
+        holoClip(Index,1,HitPos,-holoEntity(21):up(),1)
+    
+        holoCreate(Index+1)
+        holoModel(Index+1,"models/props_trainstation/trainstation_column001.mdl")
+        holoMaterial(Index+1,"models/props_combine/tpballglow")
+        holoScale(Index+1,vec(0.2,0.2,50))
+        holoColor(Index+1,vec4(255,211,211,254))
+        holoDisableShading(Index+1,1)
+        holoAlpha(Index+1,255)
+        holoParent(Index+1,Baseplate)
+        holoClipEnabled(Index+1,1,1)
+        
+        holoPos(Index+1,StartPos)
+        holoAng(Index+1,ang(BTX,BTY,0))
+        holoClip(Index+1,1,HitPos,-holoEntity(21):up(),1)
+    }
+    ## Second Beam
+    if(Iter == 0){    
+        holoCreate(Index+2)
+        holoModel(Index+2,"models/props_trainstation/trainstation_column001.mdl")
+        holoMaterial(Index+2,"models/props_combine/tpballglow")
+        holoScale(Index+2,vec(0.5,0.5,50))
+        holoColor(Index+2,vec4(255,1,1,254))
+        holoDisableShading(Index+2,1)
+        holoAlpha(Index+2,150)
+        holoParent(Index+2,Baseplate)
+        holoClipEnabled(Index+2,1,1)
+        local BTX2 = -elevation(StartPos2,ang(0,0,0),HitPos) + 90
+        local BTY2 = -bearing(StartPos2,ang(0,0,0),HitPos)
+            
+        holoPos(Index+2,StartPos2)
+        holoAng(Index+2,ang(BTX2,BTY2,0))
+        holoClip(Index+2,1,HitPos,-holoEntity(21):up(),1)
+    
+        holoCreate(Index+3)
+        holoModel(Index+3,"models/props_trainstation/trainstation_column001.mdl")
+        holoMaterial(Index+3,"models/props_combine/tpballglow")
+        holoScale(Index+3,vec(0.2,0.2,50))
+        holoColor(Index+3,vec4(255,211,211,254))
+        holoDisableShading(Index+3,1)
+        holoAlpha(Index+3,255)
+        holoParent(Index+3,Baseplate)
+        holoClipEnabled(Index+3,1,1)
+            
+        holoPos(Index+3,StartPos2)
+        holoAng(Index+3,ang(BTX2,BTY2,0))
+        holoClip(Index+3,1,HitPos,-holoEntity(21):up(),1)
+    }
+    propSpawn("models/props_phx/torpedo.mdl",HitPos,ang(0,0,0),1):propBreak()
+    SoundEntity:soundPlay(2,0.9,"npc/strider/strider_minigun.wav")
+    SoundEntity:soundPlay(3,0.9,"weapons/physcannon/superphys_launch3.wav")
+    soundPitch(2,randint(111,155))
+    soundPitch(3,randint(144,200))
+}
+
+# Armor
+ShipArmor = 1000
+
+# Define Engine Size
+EngineSizGlobal = 3
+
+# Roll power
+Rollpower = 25
+LateralCapabilities = 700
+
+# Size Multiplier
+local SizMulti = 2
+
+# Chair Offset
+Chair1Pos = vec(45,0,-20)
+Chair2Pos = vec(15,0,-20)
+
+# Limits
+Engine_MaxCount = 2
+Chair_MaxCount = 2
+HasWeapons = 1
+ChassisWeight = ShipArmor / 1500
+
+
+Skin = vec(85,85,85)
+
+# DO NOT EDIT
+holoCreate(ID)
+holoAlpha(ID,0)
+local Main = ID
+ChassisID = Main
+################# END DO NOT EDIT
+
+ID++
+holoCreate(ID)
+holoModel(ID,"sphere2")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(2,4,25)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(20,0,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(90,0,0)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_rcube")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(2,4,17)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-30,0,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(90,0,0)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_rcube")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(2.2,2.2,17)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-15,0,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(90,0,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_rcube")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(0.5,13,8)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-65,0,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(90,0,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jettailpiece1huge.mdl")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(1,1,1.15)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-55,125,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(90,75,0)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jettailpiece1huge.mdl")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(1,1,1.15)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-55,-125,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,105,0)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+
+# front wings
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jettailpiece1huge.mdl")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(0.4,0.4,0.25)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(125,12.77,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(90,75,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/jettailpiece1huge.mdl")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(0.4,0.4,0.25)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(125,-12.77,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,105,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+
+
+# Emblem
+ID++
+holoCreate(ID)
+holoModel(ID,"models/Mechanics/gears/gear16x12_small.mdl")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(0.7,0.7,0.5)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-70,-125,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,90,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_torus")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(3.5,3.5,2.7)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-70,-125,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,90,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/Mechanics/gears/gear16x12_small.mdl")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(0.7,0.7,0.5)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-70,125,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,90,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_torus")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(3.5,3.5,2.7)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-70,125,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,90,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+
+ID++
+holoCreate(ID)
+holoModel(ID,"models/props_c17/canister01a.mdl")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(1.5,1.5,1.7)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-65,-210,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,180,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/props_c17/canister01a.mdl")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(1.5,1.5,1.7)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-65,210,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,180,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_cylinder")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(0.25,0.25,5.7)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-35,-210,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,180,0)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_cylinder")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(0.25,0.25,5.7)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-35,210,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,180,0)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/hunter/tubes/tube4x4x025c.mdl")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(0.05,0.05,0.7)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-6,-206,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,90)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"models/hunter/tubes/tube4x4x025c.mdl")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(0.05,0.05,0.7)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-6,214,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,90)))
+holoColor(ID,vec(255))
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_hdome_thin")
+holoMaterial(ID,"models/shiny")
+holoScale(ID,vec(9,2.45,3.2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(18,0,10)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(55))
+holoAlpha(ID,111)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+holoModel(ID,"hq_dome")
+holoMaterial(ID,"models/props_lab/door_klab01")
+holoScale(ID,vec(3.4,2.5,17)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(12.5,0,10)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(-90,0,0)))
+holoColor(ID,Skin)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+Engine_Sockets:pushNumber(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-55,-45,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,0)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+Engine_Sockets:pushNumber(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-55,45,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,0)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+
+ID++
+holoCreate(ID)
+Weapon_Sockets:pushNumber(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-15,-210,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,0)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+Weapon_Sockets:pushNumber(ID)
+holoModel(ID,"hq_sphere")
+holoMaterial(ID,"")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-15,210,0)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,0,0)))
+holoColor(ID,vec(0))
+holoAlpha(ID,0)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+
+ID++
+holoCreate(ID)
+Chair_Sockets:pushNumber(ID)
+holoModel(ID,"")
+holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(50,0,-10)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,-90,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,1)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+ID++
+holoCreate(ID)
+Chair_Sockets:pushNumber(ID)
+holoModel(ID,"")
+holoMaterial(ID,"models/gibs/metalgibs/metal_gibs")
+holoScale(ID,vec(2,2,2)*SizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(25,0,-10)*SizMulti))
+holoAng(ID,holoEntity(Main):toWorld(ang(0,-90,0)))
+holoColor(ID,vec(255))
+holoAlpha(ID,1)
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+
