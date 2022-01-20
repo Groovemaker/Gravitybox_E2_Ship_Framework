@@ -32,14 +32,19 @@
 
 # First
 if(first() || duped()){
+    # Do not change
     Throttle = 0
     Iter = 1
     Cooldown = 1
     Cooldown2 = 1
+    
     # Holo ID Ranges, dont change.
     ChassisIDRange = 400
     EngineIDRange = 200
-        
+    
+    # COMPATIBILITY: This does NOT change the skin, merely inits it.
+    Skin = vec(0)
+    
     # Include Chassis Here!
     #include "chassis_z95"
     
@@ -124,7 +129,7 @@ if(first() || duped()){
 ## Main Loop
 if(clk("main")){
     if(perf()){
-        # Flight
+        
         if(changed(Chair1:driver())){
             if(Chair1:driver():isPlayer()){
                 Baseplate:propFreeze(0)
@@ -140,9 +145,13 @@ if(clk("main")){
                 holoAlpha(123,0)
             }
         }
+        
         if(HasDriver == 1){
+            
+            # Set up Aim position
             rangerFilter(array(Baseplate,Chair1,Chair2,Driver))
             AimPos = rangerOffset(16384, Driver:shootPos(), Driver:eye()):position()
+            
             # Weapons
             if(Driver:keyAttack1()){
                 if(Cooldown == 1){
@@ -154,6 +163,7 @@ if(clk("main")){
                     timer("cooldown",1000/Weapon_FireRate)
                 }
             }
+            
             # Missile Evasion
             if(Driver:keyAttack2()){
                 if(Cooldown2 == 1){
@@ -165,12 +175,14 @@ if(clk("main")){
                     timer("cooldown2",1000/Weapon_FireRate2)
                 }
             }
+            
             # Rolling
             if(Driver:keyLeft()){
                 Baseplate:applyAngForce( ang(0,0,-Rollpower) * (Baseplate:mass()) * 11)     
             }elseif(Driver:keyRight()){
                 Baseplate:applyAngForce( ang(0,0,Rollpower) * (Baseplate:mass()) * 11)  
             }
+            
             
             if(Driver:keyForward()){                                    # Throttle Up
                 if(Throttle < 0.066){
@@ -187,6 +199,7 @@ if(clk("main")){
                 }
             }
             
+            # Scaling
             if(Throttle != 0){
                 if(!Driver:keyBack() && !Driver:keyForward()){
                     if(Throttle > 0){
@@ -219,15 +232,23 @@ if(clk("main")){
         soundPitch(1,105+(Throttle*255))   
         
         # Utility Missiles
+        # If one is valid...
         if(Missile:isValidPhysics() || Evader:isValidPhysics()){
+            # If we found a target...
             if(Tracking == 1){
+                # and we can track at all...
                 if(CanTrack == 1){
+                    # Aim Towards Target
                     EntPos = TrackingEnt:pos()
                     Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 300) / 1)
                 }
             }
+            
+            # Fly towards target
             Missile:applyAngForce(-(Missile:angVel()) * (Missile:mass()) * 1)
             Missile:applyForce((Missile:forward() * Missile:mass())* 500)
+            
+            # Missile Evasion
             if(Evadee:isValid() && Evader:isValidPhysics()){
                 Evader:applyAngForce( -ang(Evader:elevation(Evadee:pos()),Evader:bearing(Evadee:pos()),0) * ((Evader:mass()) * 350) / 1)
                 Evader:applyAngForce(-(Evader:angVel()) * (Evader:mass()) * 1)
@@ -235,9 +256,12 @@ if(clk("main")){
             }
         }
     }
+    
     # Re-loop
     timer("main",10)
 }
+
+## Remove Beams after firing
 if(clkName():find("de-alpha")){
         local Parse = clkName():explode(";")[2,string]:toNumber()
         holoAlpha(Parse,0)
@@ -245,12 +269,16 @@ if(clkName():find("de-alpha")){
         holoAlpha(Parse+2,0)
         holoAlpha(Parse+3,0)
 }
+
+## Cooldowns
 if(clk("cooldown")){
     Cooldown = 1
 }
 if(clk("cooldown2")){
     Cooldown2 = 1
 }
+
+## Missile tracker enable
 if(clk("tracker")){
     CanTrack = 1
 }
@@ -271,9 +299,11 @@ if(clk("slow")){
             holoAng(Engine_Flames[I,number],holoEntity(Engine_Flames[I,number]):toWorld(ang(0,300,0)))
         }
         
+        # Make sure others dont see your aimball
         holoVisible(123,players(),0)
         holoVisible(123,Driver,1)
         
+        # Scale them according to throttle
         foreach(K,V:number = Engine_Flames){
             holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
         }
@@ -286,8 +316,12 @@ if(clk("slow")){
 ## Tracking System
 if(clk("trackingsys")){
     if(perf()){
+        
+        # If missile is valid
         if(Missile:isValidPhysics()){
+            # and we are not yet tracking
             if(Tracking == 0){
+                # scan for targets
                 findClearWhiteList()
                 findClearWhiteModelList()
                 findIncludeEntities(players())
@@ -297,18 +331,29 @@ if(clk("trackingsys")){
                 findExcludeClass("media*")
                 findExcludePlayerProps(owner())
                 findInSphere(Missile:pos(),TrackingRadius)
+                
+                # put them into an array
                 local XEnts = findToArray()
+                
+                # if its not empty...
                 if(XEnts[1,entity]:isValid()){
+                    
+                    # we found something, enable tracking
                     Tracking = 1
                     TrackingEnt=XEnts[1,entity]
+                    
+                    # weed out the nearest one
                     for(I=1,XEnts:count()){
                         if(XEnts[I,entity]:pos():distance(Missile:pos())<TrackingEnt:pos():distance(Missile:pos())){TrackingEnt=XEnts[I,entity]}
                     }
+                    
+                    # play confirmation sound
                     holoEntity(Weapon_Sockets[1,number]):soundPlay(4,0,"npc/scanner/combat_scan1.wav")
                     soundPitch(4,randint(95,105))
                 }
             }
         }
+        
     }
     timer("trackingsys",250)
 }
