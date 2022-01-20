@@ -206,7 +206,7 @@ if(clk("main")){
             # Velocity Dampener and Moving
             Baseplate:applyAngForce(TargAng * ((Baseplate:mass()) * 4) / ChassisWeight)
             Baseplate:applyAngForce(-(Baseplate:angVel()) * (Baseplate:mass()) * 2)
-            Baseplate:applyForce((Baseplate:forward()*(Throttle*EnginePowerSum))*Baseplate:mass())
+            Baseplate:applyForce((Baseplate:forward()*((Throttle*EnginePowerSum)*1.5))*Baseplate:mass())
             Baseplate:applyForce((Baseplate:up()*((Driver:keyJump() - Driver:keySprint())*(LateralCapabilities / 50)))*Baseplate:mass())
             
             # Aim Reticle
@@ -260,13 +260,9 @@ if(clk("slow")){
         
         # Velocity Dampener
         if(HasDriver == 1){
-            if(!Driver:keyBack() && !Driver:keyForward()){
-                Baseplate:applyForce((-Baseplate:vel() / 3)*Baseplate:mass())
-            }else{
-                Baseplate:applyForce((-Baseplate:vel() / 5)*Baseplate:mass())
-            }
-        }else{
             Baseplate:applyForce((-Baseplate:vel() / 3)*Baseplate:mass())
+        }else{
+            Baseplate:applyForce((-Baseplate:vel() / 5)*Baseplate:mass())
         }
         
         # Engine Flames
