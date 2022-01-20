@@ -22,7 +22,7 @@ EngineSizMultis:pushNumber(EngineSizMulti)
 JetLength:pushNumber(0.15)
 
 local EngineColor = vec(255,5,55)
-local EngineFlameColor = vec(255,77,111)
+local EngineFlameColor = vec(77,255,255)
 
 holoCreate(ID)
 holoAlpha(ID,0)
@@ -79,14 +79,27 @@ holoAng(ID,holoEntity(ID-1):toWorld(ang(0,0,0)))
 holoColor(ID,vec(155))
 holoParent(ID,Main)
 holoDisableShading(ID,0)
+
+ID++
+holoCreate(ID)
+holoModel(ID,"models/xqm/afterburner1huge.mdl")
+holoMaterial(ID,"models/weapons/v_stunbaton/w_shaft01a")
+holoScale(ID,vec(0.25,0.25,0.25)*EngineSizMulti)
+holoPos(ID,holoEntity(ID-1):toWorld(vec(-5,0,85)*EngineSizMulti))
+holoAng(ID,holoEntity(ID-1):toWorld(ang(0,0,0)))
+holoColor(ID,vec(155))
+holoParent(ID,Main)
+holoDisableShading(ID,0)
+
+
 ID++
 Engine_Glows:pushNumber(ID)
 holoCreate(ID)
 holoModel(ID,"hq_cylinder")
 holoColor(ID,EngineFlameColor)
 holoMaterial(ID,"models/debug/debugwhite")
-holoScale(ID,vec(1.6,1.6,0.4)*EngineSizMulti)
-holoPos(ID,holoEntity(Main):toWorld(vec(-34,0,0)*EngineSizMulti))
+holoScale(ID,vec(0.8,0.8,0.4)*EngineSizMulti)
+holoPos(ID,holoEntity(Main):toWorld(vec(-45,0,0)*EngineSizMulti))
 holoAng(ID,holoEntity(Main):toWorld(ang(90,0,0)))
 holoParent(ID,Main)
 holoDisableShading(ID,1)
