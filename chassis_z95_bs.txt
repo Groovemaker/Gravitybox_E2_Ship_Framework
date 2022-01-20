@@ -6,7 +6,7 @@ local ID = ChassisIDRange
 
 
 function secondary(Index,SoundEntity:entity,StartPos:vector,StartPos2:vector,HitPos:vector){
-    Weapon_FireRate2 = 4
+    Weapon_FireRate2 = 5.5
     switch(Iter){
         case 1, Iter = 0 break
         case 0, Iter = 1 break
@@ -16,7 +16,7 @@ function secondary(Index,SoundEntity:entity,StartPos:vector,StartPos2:vector,Hit
         holoModel(Index,"models/props_trainstation/trainstation_column001.mdl")
         holoMaterial(Index,"models/props_combine/tpballglow")
         holoScale(Index,vec(0.5,0.5,50))
-        holoColor(Index,vec4(255,1,1,254))
+        holoColor(Index,vec4(255,155,1,254))
         holoDisableShading(Index,1)
         holoAlpha(Index,150)
         holoParent(Index,Baseplate)
@@ -48,7 +48,7 @@ function secondary(Index,SoundEntity:entity,StartPos:vector,StartPos2:vector,Hit
         holoModel(Index+2,"models/props_trainstation/trainstation_column001.mdl")
         holoMaterial(Index+2,"models/props_combine/tpballglow")
         holoScale(Index+2,vec(0.5,0.5,50))
-        holoColor(Index+2,vec4(255,1,1,254))
+        holoColor(Index+2,vec4(255,155,1,254))
         holoDisableShading(Index+2,1)
         holoAlpha(Index+2,150)
         holoParent(Index+2,Baseplate)
