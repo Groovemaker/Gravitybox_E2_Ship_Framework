@@ -266,6 +266,8 @@ if(clk("slow")){
             }else{
                 Baseplate:applyForce((-Baseplate:vel() / 5)*Baseplate:mass())
             }
+        }else{
+            Baseplate:applyForce((-Baseplate:vel() / 3)*Baseplate:mass())
         }
         
         # Engine Flames
