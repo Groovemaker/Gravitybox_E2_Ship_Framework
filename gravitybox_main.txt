@@ -215,8 +215,9 @@ if(clk("main")){
             
             # Aim Reticle
             rangerFilter(array(Baseplate,owner(),Chair1,Chair2))
-            AimSiz = (Driver:pos():distance(AimPos))*0.0005
-            holoPos(123,Driver:aimPos())
+            AimPos2 = rangerOffset(16384, Driver:shootPos(), Driver:eye()):position()
+            AimSiz = (Driver:pos():distance(AimPos2))*0.0005
+            holoPos(123,AimPos2)
             holoAng(123,(Driver:pos() - AimPos):toAngle() +ang(90,0,0))
             holoScale(123,vec(0.75)+AimSiz)
             holoVisible(123,players(),0)
