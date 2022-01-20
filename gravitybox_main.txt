@@ -41,7 +41,7 @@ if(first() || duped()){
     EngineIDRange = 200
         
     # Include Chassis Here!
-    #include "chassis_z95"
+    #include "chassis_z95_bs"
     
     # Include Engines Here!
     #include "engine_headhunter"
@@ -77,12 +77,14 @@ if(first() || duped()){
     Chair1:setPos(holoEntity(Chair_Sockets[1,number]):pos())
     Chair1:setAng(holoEntity(Chair_Sockets[1,number]):angles())
     Chair1:setMass(0.001)
+    Chair1:setNoCollideAll(1)
     
     if(Chair_MaxCount > 1){
         Chair2 = seatSpawn("",1)
         Chair2:setPos(holoEntity(Chair_Sockets[2,number]):pos())
         Chair2:setAng(holoEntity(Chair_Sockets[2,number]):angles())
         Chair2:setMass(0.001)  
+        Chair2:setNoCollideAll(1)
     }
     
     # Weld Chairs to Baseplate
@@ -162,8 +164,7 @@ if(clk("main")){
                     timer(Line,(1000/Weapon_FireRate2)/2)
                     timer("cooldown2",1000/Weapon_FireRate2)
                 }
-            }       
-            
+            }
             # Rolling
             if(Driver:keyLeft()){
                 Baseplate:applyAngForce( ang(0,0,-Rollpower) * (Baseplate:mass()) * 11)     
@@ -206,7 +207,7 @@ if(clk("main")){
             # Velocity Dampener and Moving
             Baseplate:applyAngForce(TargAng * ((Baseplate:mass()) * 4) / ChassisWeight)
             Baseplate:applyAngForce(-(Baseplate:angVel()) * (Baseplate:mass()) * 2)
-            Baseplate:applyForce((Baseplate:forward()*((Throttle*EnginePowerSum)*1.5))*Baseplate:mass())
+            Baseplate:applyForce((Baseplate:forward()*((Throttle*EnginePowerSum)*1.25))*Baseplate:mass())
             Baseplate:applyForce((Baseplate:up()*((Driver:keyJump() - Driver:keySprint())*(LateralCapabilities / 50)))*Baseplate:mass())
             
             # Aim Reticle
@@ -303,8 +304,6 @@ if(clk("trackingsys")){
                     for(I=1,XEnts:count()){
                         if(XEnts[I,entity]:pos():distance(Missile:pos())<TrackingEnt:pos():distance(Missile:pos())){TrackingEnt=XEnts[I,entity]}
                     }
-                    #TrackingEnt = findToArray()[1,entity]
-                    #print(TrackingEnt)
                     holoEntity(Weapon_Sockets[1,number]):soundPlay(4,0,"npc/scanner/combat_scan1.wav")
                     soundPitch(4,randint(95,105))
                 }

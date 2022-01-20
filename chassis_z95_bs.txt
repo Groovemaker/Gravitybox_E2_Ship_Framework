@@ -89,7 +89,7 @@ EngineSizGlobal = 3
 
 # Roll power
 Rollpower = 25
-LateralCapabilities = 700
+LateralCapabilities = 1500
 
 # Size Multiplier
 local SizMulti = 2
