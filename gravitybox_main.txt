@@ -173,25 +173,24 @@ if(clk("main")){
             
             if(Driver:keyForward()){                                    # Throttle Up
                 if(Throttle < 0.066){
-                    Throttle = Throttle + (ThrottlePower / 2000) / ChassisWeight
+                    Throttle = Throttle + (ThrottlePower / 1000) / ChassisWeight
                 }
             }elseif(Driver:keyBack()){                                 # Throttle Down
                 if(Throttle > -0.066){
-                    Throttle = Throttle - (ThrottlePower / 2000) / ChassisWeight
+                    Throttle = Throttle - (ThrottlePower / 1000) / ChassisWeight
+                    if(Throttle < 0){
+                        foreach(K,V:number = Engine_Flames){
+                            holoScale(V,vec(0))
+                        }
+                    }
                 }
             }
             
             if(Throttle != 0){
-                if(!Driver:keyBack() && !Driver:keyForward()){             # Standing Still Over 0
+                if(!Driver:keyBack() && !Driver:keyForward()){
                     if(Throttle > 0){
                         Throttle = Throttle - (ThrottlePower / 1000) / ChassisWeight
-                        foreach(K,V:number = Engine_Flames){
-                            holoScale(V,vec(0))
-                        }
-                        Baseplate:applyForce((-Baseplate:vel())*Baseplate:mass()*0.01)
-                    }
-                }elseif(!Driver:keyBack() && !Driver:keyForward()){             # Standing Still Below 0
-                    if(Throttle < 0){
+                    }elseif(Throttle < 0){
                         Throttle = Throttle + (ThrottlePower / 1000) / ChassisWeight
                         foreach(K,V:number = Engine_Flames){
                             holoScale(V,vec(0))
@@ -262,7 +261,7 @@ if(clk("slow")){
         # Velocity Dampener
         if(HasDriver == 1){
             if(!Driver:keyBack() && !Driver:keyForward()){
-                Baseplate:applyForce((-Baseplate:vel() / 4)*Baseplate:mass())
+                Baseplate:applyForce((-Baseplate:vel() / 3)*Baseplate:mass())
             }else{
                 Baseplate:applyForce((-Baseplate:vel() / 5)*Baseplate:mass())
             }
