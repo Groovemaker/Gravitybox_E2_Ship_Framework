@@ -98,12 +98,15 @@ if(first() || duped()){
     holoEntity(ChassisID):soundPlay(1,0,EngineSound)
     soundPitch(1,0)
     
-    # Main Loop init
+    # MAIN Loop
     timer("main",1)
-    timer("anim",1)
+    
+    # SLOW Loop
+    timer("slow",1)
+    
+    # Tracking System
     timer("trackingsys",1)
     
-    #Baseplate:propFreeze(0)
     Chair1:propFreeze(0)
     Chair2:propFreeze(0)
     
@@ -171,18 +174,10 @@ if(clk("main")){
             if(Driver:keyForward()){                                    # Throttle Up
                 if(Throttle < 0.066){
                     Throttle = Throttle + (ThrottlePower / 2000) / ChassisWeight
-                    foreach(K,V:number = Engine_Flames){
-                        holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
-                    }
                 }
             }elseif(Driver:keyBack()){                                 # Throttle Down
                 if(Throttle > -0.066){
                     Throttle = Throttle - (ThrottlePower / 2000) / ChassisWeight
-                    if(Throttle > 0){
-                        foreach(K,V:number = Engine_Flames){
-                            holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
-                        }
-                    }
                 }
             }
             
@@ -221,10 +216,7 @@ if(clk("main")){
         }
         
         # Pitch sound
-        soundPitch(1,105+(Throttle*255))
-        
-        # Velocity Dampener
-        Baseplate:applyForce((-Baseplate:vel() / 50)*Baseplate:mass())   
+        soundPitch(1,105+(Throttle*255))   
         
         # Utility Missiles
         if(Missile:isValidPhysics() || Evader:isValidPhysics()){
@@ -263,19 +255,37 @@ if(clk("tracker")){
     CanTrack = 1
 }
 
-if(clk("anim")){
+## SLOW Loop
+if(clk("slow")){
     if(perf()){
+        
+        # Velocity Dampener
+        if(HasDriver == 1){
+            if(!Driver:keyBack() && !Driver:keyForward()){
+                Baseplate:applyForce((-Baseplate:vel() / 4)*Baseplate:mass())
+            }else{
+                Baseplate:applyForce((-Baseplate:vel() / 5)*Baseplate:mass())
+            }
+        }
+        
         # Engine Flames
         for(I=1,Engine_Flames:count()){
             holoAng(Engine_Flames[I,number],holoEntity(Engine_Flames[I,number]):toWorld(ang(0,300,0)))
         }
+        
         holoVisible(123,players(),0)
         holoVisible(123,Driver,1)
-        print(ops())
+        
+        foreach(K,V:number = Engine_Flames){
+            holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
+        }
+        
+        #print(ops())
     }
-    timer("anim",100)
+    timer("slow",150)
 }
 
+## Tracking System
 if(clk("trackingsys")){
     if(perf()){
         if(Missile:isValidPhysics()){
