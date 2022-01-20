@@ -82,7 +82,7 @@ function secondary(Index,SoundEntity:entity,StartPos:vector,StartPos2:vector,Hit
 }
 
 # Armor
-ShipArmor = 1000
+ShipArmor = 1250
 
 # Define Engine Size
 EngineSizGlobal = 3
