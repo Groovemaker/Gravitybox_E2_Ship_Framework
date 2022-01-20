@@ -292,6 +292,7 @@ if(clk("trackingsys")){
                 findIncludeEntities(players())
                 findIncludeClass("prop_vehicle*")
                 findExcludePlayer(Driver)
+                findExcludePlayer(Chair2:driver())
                 findExcludeClass("media*")
                 findExcludePlayerProps(owner())
                 findInSphere(Missile:pos(),TrackingRadius)
