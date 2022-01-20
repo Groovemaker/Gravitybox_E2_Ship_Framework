@@ -14,7 +14,7 @@
 
 # Flight
 
-@persist [Throttle IsOn Rollpower Roll]
+@persist [Throttle IsOn Rollpower Roll HasDriver]
 @persist [Driver]:entity
 
 #[
@@ -41,7 +41,7 @@ if(first() || duped()){
     EngineIDRange = 200
         
     # Include Chassis Here!
-    #include "chassis_z95"
+    #include "chassis_z95_bs"
     
     # Include Engines Here!
     #include "engine_headhunter"
@@ -100,6 +100,7 @@ if(first() || duped()){
     
     # Main Loop init
     timer("main",1)
+    timer("anim",1)
     timer("trackingsys",1)
     
     #Baseplate:propFreeze(0)
@@ -118,21 +119,22 @@ if(first() || duped()){
 ## Main Loop
 if(clk("main")){
     if(perf()){
-        # Engine Flames
-        for(I=1,Engine_Flames:count()){
-            holoAng(Engine_Flames[I,number],holoEntity(Engine_Flames[I,number]):toWorld(ang(0,111,0)))
-        }
-        
         # Flight
-        if(changed(Chair1:driver()) && Chair1:driver():isPlayer()){
-            Baseplate:propFreeze(0)
+        if(changed(Chair1:driver())){
+            if(Chair1:driver():isPlayer()){
+                Baseplate:propFreeze(0)
+                Driver = Chair1:driver()
+                HasDriver = 1
+                holoAlpha(123,254)
+            }else{
+                HasDriver = 0
+                holoAlpha(123,0)
+            }
         }
-        if(Chair1:driver()){
-            holoAlpha(123,254)
-            Driver = Chair1:driver()
+        if(HasDriver == 1){
             rangerFilter(array(Baseplate,Chair1,Chair2,Driver))
-            AimRan = rangerOffset(16384, Driver:shootPos(), Driver:eye())
-            local AimPos = AimRan:position()
+            AimPos = rangerOffset(16384, Driver:shootPos(), Driver:eye()):position()
+            
             # Weapons
             if(Driver:keyAttack1()){
                 if(Cooldown == 1){
@@ -141,7 +143,6 @@ if(clk("main")){
                     if(HasWeapons == 1){weapon_fire(777,holoEntity(Weapon_Sockets[1,number]),holoEntity(Weapon_Sockets[1,number]):pos(),FirePos)}
                     local Line = "de-alpha;"+777
                     timer(Line,(1000/Weapon_FireRate)/2)
-                    soundVolume(2,3)
                     timer("cooldown",1000/Weapon_FireRate)
                 }
             }
@@ -153,44 +154,35 @@ if(clk("main")){
                     if(HasWeapons == 1){secondary(777,holoEntity(Weapon_Sockets[1,number]),holoEntity(Weapon_Sockets[1,number]):pos(),holoEntity(Weapon_Sockets[2,number]):pos(),FirePos)}
                     local Line = "de-alpha;"+777
                     timer(Line,(1000/Weapon_FireRate2)/2)
-                    soundVolume(2,3)
                     timer("cooldown2",1000/Weapon_FireRate2)
                 }
-            }            
+            }  
+                      
             # Rolling
             if(Driver:keyLeft()){
                 Baseplate:applyAngForce( ang(0,0,-Rollpower) * (Baseplate:mass()) * 11)     
             }elseif(Driver:keyRight()){
                 Baseplate:applyAngForce( ang(0,0,Rollpower) * (Baseplate:mass()) * 11)  
-            }elseif(!Driver:keyLeft() && !Driver:keyRight()){
             }
-            
-            # Throttle up
-            if(Driver:keyForward() && Throttle < 0.066){
+            if(Driver:keyForward() && Throttle < 0.066){                                    # Throttle Up
                 Throttle = Throttle + (ThrottlePower / 2000) / ChassisWeight
                 foreach(K,V:number = Engine_Flames){
                     holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
                 }
-            
-            # Throttle down
-            }elseif(Driver:keyBack() && Throttle > -0.066){
+            }elseif(Driver:keyBack() && Throttle > -0.066){                                 # Throttle Down
                 Throttle = Throttle - (ThrottlePower / 2000) / ChassisWeight
                 if(Throttle > 0){
                     foreach(K,V:number = Engine_Flames){
                         holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
                     }
                 }
-            
-            # Stand still
-            }elseif(!Driver:keyBack() && !Driver:keyForward() && Throttle > 0){
+            }elseif(!Driver:keyBack() && !Driver:keyForward() && Throttle > 0){             # Standing Still Over 0
                 Throttle = Throttle - (ThrottlePower / 1000) / ChassisWeight
                 foreach(K,V:number = Engine_Flames){
                     holoScale(V,vec(Throttle,Throttle,JetLength[K,number]) * EngineSizMultis[K,number])
                 }
                 Baseplate:applyForce((-Baseplate:vel())*Baseplate:mass()*0.01)
-            
-            # Stand still Part II
-            }elseif(!Driver:keyBack() && !Driver:keyForward() && Throttle < 0){
+            }elseif(!Driver:keyBack() && !Driver:keyForward() && Throttle < 0){             # Standing Still Below 0
                 Throttle = Throttle + (ThrottlePower / 1000) / ChassisWeight
                 foreach(K,V:number = Engine_Flames){
                     holoScale(V,vec(0) * EngineSizMultis[K,number])
@@ -200,32 +192,22 @@ if(clk("main")){
             # Aim
             rangerFilter(array(Baseplate,owner(),Chair1,Chair2))
             TaPos = rangerOffset(16384, Driver:shootPos(), Driver:eye()):position()
-
-            P = Baseplate:elevation(TaPos) # ^
-            Y = Baseplate:bearing(TaPos)   # >
             R = (Rollpower * Baseplate:mass())/100
-            TargAng = -ang(P,Y,0)   
+            TargAng = -ang(Baseplate:elevation(TaPos),Baseplate:bearing(TaPos),0)   
             
             # Velocity Dampener and Moving
             Baseplate:applyAngForce(TargAng * ((Baseplate:mass()) * 4) / ChassisWeight)
-            #Baseplate:applyAngForce((Chair1:angles()-Driver:eyeAngles()) * (Baseplate:mass()) * 2.3)
             Baseplate:applyAngForce(-(Baseplate:angVel()) * (Baseplate:mass()) * 2)
             Baseplate:applyForce((Baseplate:forward()*(Throttle*EnginePowerSum))*Baseplate:mass())
             Baseplate:applyForce((Baseplate:up()*((Driver:keyJump() - Driver:keySprint())*(LateralCapabilities / 50)))*Baseplate:mass())
             
             # Aim Reticle
-            rangerFilter(array(Baseplate,owner(),Chair1,Chair2))
-            AimPos2 = rangerOffset(16384, Driver:shootPos(), Driver:eye()):position()
-            AimSiz = (Driver:pos():distance(AimPos2))*0.0005
-            holoPos(123,AimPos2)
+            holoPos(123,AimPos)
             holoAng(123,(Driver:pos() - AimPos):toAngle() +ang(90,0,0))
-            holoScale(123,vec(0.75)+AimSiz)
-            holoVisible(123,players(),0)
-            holoVisible(123,Driver,1)
+            holoScale(123,vec(0.75)+Driver:pos():distance(AimPos)*0.0005)
             
         # Standing still    
         }else{
-            holoAlpha(123,0)
             Throttle = 0
             foreach(K,V:number = Engine_Flames){
                 holoScale(V,vec(0) * EngineSizMultis[K,number])
@@ -237,34 +219,27 @@ if(clk("main")){
         
         # Velocity Dampener
         Baseplate:applyForce((-Baseplate:vel() / 50)*Baseplate:mass())   
+        
         # Utility Missiles
-        if(Tracking == 0){
-            MissileSpeed = 700
-            #Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
-        }else{
-            MissileSpeed = 500
-            if(CanTrack == 1){
-                EntPos = TrackingEnt:pos()
-                Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 300) / 1)
-            }else{
-                #Missile:applyAngForce( -ang(Missile:elevation(TaPos),Missile:bearing(TaPos),0) * ((Missile:mass()) * 150) / 1)
+        if(Missile:isValidPhysics() || Evader:isValidPhysics()){
+            if(Tracking == 1){
+                if(CanTrack == 1){
+                    EntPos = TrackingEnt:pos()
+                    Missile:applyAngForce( -ang(Missile:elevation(EntPos),Missile:bearing(EntPos),0) * ((Missile:mass()) * 300) / 1)
+                }
             }
-        }
-        Missile:applyAngForce(-(Missile:angVel()) * (Missile:mass()) * 1)
-        Missile:applyForce((Missile:forward() * Missile:mass())* MissileSpeed)
-        if(Evadee:isValid()){
-            Evader:applyAngForce( -ang(Evader:elevation(Evadee:pos()),Evader:bearing(Evadee:pos()),0) * ((Evader:mass()) * 350) / 1)
-            Evader:applyAngForce(-(Evader:angVel()) * (Evader:mass()) * 1)
-            Evader:applyForce((Evader:forward() * Evader:mass())* 300)
+            Missile:applyAngForce(-(Missile:angVel()) * (Missile:mass()) * 1)
+            Missile:applyForce((Missile:forward() * Missile:mass())* 500)
+            if(Evadee:isValid() && Evader:isValidPhysics()){
+                Evader:applyAngForce( -ang(Evader:elevation(Evadee:pos()),Evader:bearing(Evadee:pos()),0) * ((Evader:mass()) * 350) / 1)
+                Evader:applyAngForce(-(Evader:angVel()) * (Evader:mass()) * 1)
+                Evader:applyForce((Evader:forward() * Evader:mass())* 300)
+            }
         }
     }
     
     # Re-loop
-    if(perf()){
-        timer("main",10)
-    }else{
-        timer("main",50)
-    }
+    timer("main",10)
 }
 if(clkName():find("de-alpha")){
         local Parse = clkName():explode(";")[2,string]:toNumber()
@@ -272,7 +247,6 @@ if(clkName():find("de-alpha")){
         holoAlpha(Parse+1,0)
         holoAlpha(Parse+2,0)
         holoAlpha(Parse+3,0)
-        #holoDelete(Parse)
 }
 if(clk("cooldown")){
     Cooldown = 1
@@ -283,8 +257,19 @@ if(clk("cooldown2")){
 if(clk("tracker")){
     CanTrack = 1
 }
+
+if(clk("anim")){
+    # Engine Flames
+    for(I=1,Engine_Flames:count()){
+        holoAng(Engine_Flames[I,number],holoEntity(Engine_Flames[I,number]):toWorld(ang(0,300,0)))
+    }
+    holoVisible(123,players(),0)
+    holoVisible(123,Driver,1)
+    timer("anim",100)
+}
+
 if(clk("trackingsys")){
-    if(perf()){
+    if(perf() && Missile:isValidPhysics()){
         if(Tracking == 0){
             findClearWhiteList()
             findClearWhiteModelList()
@@ -307,7 +292,7 @@ if(clk("trackingsys")){
                 soundPitch(4,randint(95,105))
             }
         }
-        timer("trackingsys",250)
     }
+    timer("trackingsys",250)
 }
 
